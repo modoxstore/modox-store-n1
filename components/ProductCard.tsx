@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import {
+  Check,
   ShoppingCart,
   Snowflake,
   Sparkles,
   Wrench,
+  X,
 } from "lucide-react";
 import { useCart } from "./CartContext";
 
@@ -15,6 +17,7 @@ type ProductCardProps = {
   image: string;
   rating: number;
   reviews: number;
+  stock: number;
   badge?: string;
 };
 
@@ -24,37 +27,86 @@ export default function ProductCard({
   image,
   rating,
   reviews,
+  stock,
   badge,
 }: ProductCardProps) {
   const { addToCart } = useCart();
 
+  const isSoldOut = stock === 0;
+  const isLowStock = stock > 0 && stock <= 5;
+
   return (
-    <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#050908] transition duration-300 hover:-translate-y-2 hover:border-green-400/40 hover:shadow-[0_0_45px_rgba(34,197,94,0.14)]">
+    <article
+      dir="rtl"
+      className="group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-white/10 bg-[#060a09] transition duration-500 hover:-translate-y-2 hover:border-green-400/40 hover:shadow-[0_20px_70px_rgba(34,197,94,0.12)]"
+    >
+      {/* Badge */}
       {badge && (
-        <span className="absolute right-3 top-3 z-20 rounded-full border border-green-400/40 bg-black/80 px-3 py-1 text-xs font-black text-green-400 backdrop-blur-md">
+        <span className="absolute right-4 top-4 z-20 rounded-full border border-green-400/40 bg-black/75 px-3.5 py-1.5 text-xs font-black text-green-400 backdrop-blur-md">
           🔥 {badge}
         </span>
       )}
 
-      <div className="relative h-[340px] overflow-hidden bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.13),transparent_65%)]">
-        <div className="absolute inset-x-10 bottom-8 h-12 rounded-full bg-green-400/15 blur-2xl transition group-hover:bg-green-400/25" />
+      {/* Availability */}
+      {isSoldOut ? (
+        <span className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-[11px] font-bold text-red-400 backdrop-blur-md">
+          <X size={13} />
+          نفذت الكمية
+        </span>
+      ) : isLowStock ? (
+        <span className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-orange-400/30 bg-orange-400/10 px-3 py-1.5 text-[11px] font-bold text-orange-300 backdrop-blur-md">
+          باقي غير {stock} قطع
+        </span>
+      ) : (
+        <span className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/70 px-3 py-1.5 text-[11px] font-bold text-zinc-300 backdrop-blur-md">
+          <Check size={13} className="text-green-400" />
+          متوفر: {stock} قطعة
+        </span>
+      )}
+
+      {/* Product image */}
+      <div className="relative h-[310px] overflow-hidden border-b border-white/5 sm:h-[340px]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.15),transparent_65%)]" />
+
+        <div className="absolute inset-x-12 bottom-8 h-14 rounded-full bg-green-400/15 blur-2xl transition duration-500 group-hover:bg-green-400/25" />
 
         <Image
           src={image}
           alt={name}
           fill
-          className="object-contain p-2 transition duration-500 group-hover:scale-105"
+          sizes="(max-width:640px) 100vw, (max-width:1280px) 50vw, 25vw"
+          className={`object-contain p-5 transition duration-500 group-hover:scale-110 ${
+            isSoldOut ? "opacity-50 grayscale" : ""
+          }`}
         />
       </div>
 
-      <div className="p-5">
-        <h3 className="text-xl font-black text-white">
-          {name}
-        </h3>
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold text-zinc-500">
+              مبرد هاتف Gaming
+            </p>
 
-        <div className="mt-2 flex items-center gap-2">
-          <div className="text-sm text-lime-400">
-            {"★".repeat(rating)}
+            <h3 className="mt-1 text-2xl font-black text-white transition group-hover:text-green-400">
+              {name}
+            </h3>
+          </div>
+
+          <p className="whitespace-nowrap text-2xl font-black text-green-400">
+            {price}
+            <span className="mr-1 text-sm">DH</span>
+          </p>
+        </div>
+
+        {/* Rating */}
+        <div className="mt-3 flex items-center gap-2">
+          <div
+            className="flex text-sm text-yellow-400"
+            aria-label={`${rating} من 5 نجوم`}
+          >
+            <span>{"★".repeat(rating)}</span>
 
             <span className="text-zinc-700">
               {"★".repeat(5 - rating)}
@@ -62,53 +114,75 @@ export default function ProductCard({
           </div>
 
           <span className="text-xs text-zinc-500">
-            ({reviews})
+            {reviews} تقييم
           </span>
         </div>
 
-        <p className="mt-3 text-2xl font-black text-green-400">
-          {price} DH
-        </p>
+        {/* Stock under price */}
+        <div className="mt-4">
+          {isSoldOut ? (
+            <p className="font-black text-red-400">
+              🔴 نفذت الكمية
+            </p>
+          ) : isLowStock ? (
+            <p className="font-black text-orange-300">
+              🟠 سارع، باقي غير {stock} قطع
+            </p>
+          ) : (
+            <p className="font-bold text-green-400">
+              🟢 المخزون: {stock} قطعة
+            </p>
+          )}
+        </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-2 border-y border-white/5 py-4 text-center text-[11px] text-zinc-400">
-          <div>
-            <Snowflake
-              className="mx-auto mb-1 text-white"
-              size={17}
-            />
-            تبريد فائق
+        {/* Features */}
+        <div className="mt-5 grid grid-cols-3 gap-2 border-y border-white/5 py-4">
+          <div className="text-center">
+            <Snowflake size={18} className="mx-auto text-cyan-300" />
+
+            <p className="mt-2 text-[11px] font-bold text-zinc-400">
+              تبريد فائق
+            </p>
           </div>
 
-          <div>
-            <Sparkles
-              className="mx-auto mb-1 text-green-400"
-              size={17}
-            />
-            إضاءة RGB
+          <div className="border-x border-white/5 text-center">
+            <Sparkles size={18} className="mx-auto text-green-400" />
+
+            <p className="mt-2 text-[11px] font-bold text-zinc-400">
+              إضاءة RGB
+            </p>
           </div>
 
-          <div>
-            <Wrench
-              className="mx-auto mb-1 text-green-400"
-              size={17}
-            />
-            تركيب سهل
+          <div className="text-center">
+            <Wrench size={18} className="mx-auto text-green-400" />
+
+            <p className="mt-2 text-[11px] font-bold text-zinc-400">
+              تركيب سهل
+            </p>
           </div>
         </div>
 
+        {/* Add to cart */}
         <button
           type="button"
-          onClick={() =>
+          disabled={isSoldOut}
+          onClick={() => {
+            if (isSoldOut) return;
+
             addToCart({
               name,
               price,
               image,
-            })
-          }
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-green-400 px-5 py-3 font-black text-black transition hover:scale-[1.02] hover:bg-green-300"
+            });
+          }}
+          className={`mt-auto flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3.5 font-black transition duration-300 ${
+            isSoldOut
+              ? "cursor-not-allowed bg-zinc-800 text-zinc-500"
+              : "bg-green-400 text-black shadow-lg shadow-green-500/10 hover:-translate-y-0.5 hover:bg-green-300 hover:shadow-green-500/20 active:scale-[0.98]"
+          }`}
         >
-          <ShoppingCart size={19} />
-          أضف للسلة
+          <ShoppingCart size={20} />
+          {isSoldOut ? "غير متوفر حالياً" : "أضف للسلة"}
         </button>
       </div>
     </article>

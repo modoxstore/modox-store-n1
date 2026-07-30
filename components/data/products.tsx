@@ -2,7 +2,7 @@ export const products = [
   {
     name: "5 in 1 Mobile Game Gear Combo",
     price: 250,
-    stock: 3,
+    stock: 0,
     image: "/images/combo5in1.jpg",
     rating: 5,
     reviews: 12,
@@ -60,7 +60,7 @@ export const products = [
   {
     name: "Gaming Finger Sleeves",
     price: 20,
-    stock: 5,
+    stock: 31,
     image: "/images/finger-sleeves.png",
     rating: 5,
     reviews: 15,
@@ -85,7 +85,7 @@ export const products = [
   {
     name: "I51",
     price: 149,
-    stock: 4,
+    stock: 2,
     image: "/images/I51.PNG",
     rating: 5,
     reviews: 98,
@@ -93,7 +93,7 @@ export const products = [
   {
     name: "XS-06",
     price: 99,
-    stock: 3,
+    stock: 0,
     image: "/images/XS06.PNG",
     rating: 5,
     reviews: 73,
@@ -101,7 +101,7 @@ export const products = [
   {
     name: "XS-09",
     price: 99,
-    stock: 1,
+    stock: 0,
     image: "/images/XS09.PNG",
     rating: 4,
     reviews: 64,

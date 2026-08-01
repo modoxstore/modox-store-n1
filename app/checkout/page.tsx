@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useCart } from "@/components/CartContext";
-
+import { supabase } from "../../lib/supabase";
 export default function CheckoutPage() {
   const { items, totalPrice } = useCart();
 
@@ -21,8 +21,11 @@ export default function CheckoutPage() {
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const sendOrder = (event: FormEvent<HTMLFormElement>) => {
+  const sendOrder = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
 
     if (items.length === 0) {
@@ -30,18 +33,24 @@ export default function CheckoutPage() {
       return;
     }
 
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     const productsText = items
-  .map(
-    (item) =>
-      `${item.name}
+      .map(
+        (item) =>
+          `${item.name}
 السعر: ${item.price} DH
 الكمية: ${item.quantity}
 المجموع: ${item.price * item.quantity} DH`,
-  )
-  .join("\n\n");
+      )
+      .join("\n\n");
 
     const message = `
-طلب جديد من MODOX STORE 
+طلب جديد من MODOX STORE
 
 الاسم الكامل: ${fullName}
 رقم الهاتف: ${phone}
@@ -58,15 +67,45 @@ ${productsText}
 ${note || "لا توجد ملاحظة"}
     `.trim();
 
-    // بدل هاد الرقم برقم WhatsApp ديال المتجر
-    // كتب الرقم بلا + وبلا مسافات
-    const storeWhatsApp = "212708872257";
+    try {
+      const { error } = await supabase
+        .from("orders")
+        .insert({
+          customer_name: fullName.trim(),
+          phone: phone.trim(),
+          city: city.trim(),
+          address: address.trim(),
+          total: totalPrice,
+          status: "new",
+        });
 
-    const whatsappUrl = `https://wa.me/${storeWhatsApp}?text=${encodeURIComponent(
-      message,
-    )}`;
+      if (error) {
+        console.error("Supabase error:", error);
 
-    window.open(whatsappUrl, "_blank");
+        alert(
+          "وقع مشكل فتسجيل الطلب. عاود حاول من جديد.",
+        );
+
+        return;
+      }
+
+      const storeWhatsApp = "212708270909"
+
+      const whatsappUrl =
+        `https://wa.me/${storeWhatsApp}?text=${encodeURIComponent(
+          message,
+        )}`;
+
+      window.open(whatsappUrl, "_blank");
+    } catch (error) {
+      console.error("Order error:", error);
+
+      alert(
+        "وقع مشكل فتسجيل الطلب. تأكد من الإنترنت وعاود حاول.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -284,9 +323,12 @@ ${note || "لا توجد ملاحظة"}
 
             <button
               type="submit"
-              className="mt-7 w-full rounded-xl bg-green-400 px-6 py-4 text-lg font-black text-black transition hover:bg-green-300"
+              disabled={isSubmitting}
+              className="mt-7 w-full rounded-xl bg-green-400 px-6 py-4 text-lg font-black text-black transition hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              إرسال الطلب عبر WhatsApp
+              {isSubmitting
+                ? "جاري تسجيل الطلب..."
+                : "إرسال الطلب عبر WhatsApp"}
             </button>
           </form>
 

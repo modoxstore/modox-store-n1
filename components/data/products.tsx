@@ -2,7 +2,7 @@ export const products = [
   {
     name: "5 in 1 Mobile Game Gear Combo",
     price: 250,
-    stock: 0,
+    stock: 6,
     image: "/images/combo5in1.jpg",
     rating: 5,
     reviews: 12,
@@ -11,7 +11,7 @@ export const products = [
   {
     name: "USB-C HUB FD-U2",
     price: 60,
-    stock: 5,
+    stock: 4,
     image: "/images/fd-u2.png",
     rating: 5,
     reviews: 8,
@@ -19,7 +19,7 @@ export const products = [
   {
     name: "USB-C HUB FD-U4",
     price: 55,
-    stock: 5,
+    stock: 0,
     image: "/images/fd-u4.png",
     rating: 5,
     reviews: 5,
@@ -27,7 +27,7 @@ export const products = [
   {
     name: "Cartoon Spray Fan",
     price: 89,
-    stock: 5,
+    stock: 4,
     image: "/images/cartoon-fan.png",
     rating: 5,
     reviews: 3,
@@ -52,7 +52,7 @@ export const products = [
   {
     name: "WOVA 240W Cable",
     price: 80,
-    stock: 5,
+    stock: 4,
     image: "/images/wova240w.png",
     rating: 5,
     reviews: 4,
@@ -60,7 +60,7 @@ export const products = [
   {
     name: "Gaming Finger Sleeves",
     price: 20,
-    stock: 31,
+    stock: 28,
     image: "/images/finger-sleeves.png",
     rating: 5,
     reviews: 15,
@@ -76,7 +76,7 @@ export const products = [
   {
     name: "S38",
     price: 149,
-    stock: 0,
+    stock: 1,
     image: "/images/S38.PNG",
     rating: 5,
     reviews: 152,
@@ -85,7 +85,7 @@ export const products = [
   {
     name: "I51",
     price: 149,
-    stock: 0,
+    stock: 5,
     image: "/images/I51.PNG",
     rating: 5,
     reviews: 98,
@@ -101,7 +101,7 @@ export const products = [
   {
     name: "XS-09",
     price: 99,
-    stock: 0,
+    stock: 2,
     image: "/images/XS09.PNG",
     rating: 4,
     reviews: 64,
@@ -118,7 +118,7 @@ export const products = [
   {
     name: "RGB Phone Cooler",
     price: 120,
-    stock: 27,
+    stock: 17,
     image: "/images/rgb-cooler.png",
     rating: 5,
     reviews: 18,
@@ -127,7 +127,7 @@ export const products = [
   {
     name: "Phone Cooler Premium",
     price: 250,
-    stock: 4,
+    stock: 3,
     image: "/images/phone-cooler.png",
     rating: 5,
     reviews: 11,
@@ -135,7 +135,7 @@ export const products = [
   {
     name: "Power Bank 50000mAh",
     price: 340,
-    stock: 1,
+    stock: 0,
     image: "/images/powerbank50000.png",
     rating: 5,
     reviews: 9,

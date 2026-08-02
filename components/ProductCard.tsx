@@ -134,34 +134,6 @@ export default function ProductCard({
             </p>
           )}
         </div>
-
-        {/* Features */}
-        <div className="mt-5 grid grid-cols-3 gap-2 border-y border-white/5 py-4">
-          <div className="text-center">
-            <Snowflake size={18} className="mx-auto text-cyan-300" />
-
-            <p className="mt-2 text-[11px] font-bold text-zinc-400">
-              تبريد فائق
-            </p>
-          </div>
-
-          <div className="border-x border-white/5 text-center">
-            <Sparkles size={18} className="mx-auto text-green-400" />
-
-            <p className="mt-2 text-[11px] font-bold text-zinc-400">
-              إضاءة RGB
-            </p>
-          </div>
-
-          <div className="text-center">
-            <Wrench size={18} className="mx-auto text-green-400" />
-
-            <p className="mt-2 text-[11px] font-bold text-zinc-400">
-              تركيب سهل
-            </p>
-          </div>
-        </div>
-
         {/* Add to cart */}
         <button
           type="button"

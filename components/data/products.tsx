@@ -76,7 +76,7 @@ export const products = [
   {
     name: "S38",
     price: 149,
-    stock: 1,
+    stock: 0,
     image: "/images/S38.PNG",
     rating: 5,
     reviews: 152,
@@ -118,7 +118,7 @@ export const products = [
   {
     name: "RGB Phone Cooler",
     price: 120,
-    stock: 17,
+    stock: 15,
     image: "/images/rgb-cooler.png",
     rating: 5,
     reviews: 18,
@@ -127,7 +127,7 @@ export const products = [
   {
     name: "Phone Cooler Premium",
     price: 250,
-    stock: 3,
+    stock: 2,
     image: "/images/phone-cooler.png",
     rating: 5,
     reviews: 11,
@@ -178,7 +178,7 @@ export const products = [
   {
     name: "AirPods Apple",
     price: 60,
-    stock: 6,
+    stock: 5,
     image: "/images/airpods-apple.png",
     rating: 5,
     reviews: 20,

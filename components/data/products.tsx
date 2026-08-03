@@ -1,5 +1,6 @@
 export const products = [
   {
+    
     name: "5 in 1 Mobile Game Gear Combo",
     price: 250,
     stock: 6,
@@ -8,6 +9,15 @@ export const products = [
     reviews: 12,
     badge: "جديد",
   },
+  {
+  name: "باك الهبال GAMER 🔥",
+  price: 450,
+  stock: 3,
+  image: "/images/bak-lhbal.jpg",
+  rating: 5,
+  reviews: 12,
+  badge: "الأكثر مبيعاً",
+},
   {
     name: "USB-C HUB FD-U2",
     price: 60,

@@ -89,7 +89,7 @@ ${note || "لا توجد ملاحظة"}
         return;
       }
 
-      const storeWhatsApp = "212708270909"
+      const storeWhatsApp = "212708872257"
 
       const whatsappUrl =
         `https://wa.me/${storeWhatsApp}?text=${encodeURIComponent(

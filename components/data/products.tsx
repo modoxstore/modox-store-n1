@@ -12,7 +12,7 @@ export const products = [
   {
   name: "باك الهبال GAMER 🔥",
   price: 450,
-  stock: 3,
+  stock: 5,
   image: "/images/bak-lhbal.jpg",
   rating: 5,
   reviews: 12,

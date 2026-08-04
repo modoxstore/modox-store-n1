@@ -27,14 +27,6 @@ export const products = [
     reviews: 8,
   },
   {
-    name: "USB-C HUB FD-U4",
-    price: 55,
-    stock: 0,
-    image: "/images/fd-u4.png",
-    rating: 5,
-    reviews: 5,
-  },
-  {
     name: "Cartoon Spray Fan",
     price: 89,
     stock: 4,

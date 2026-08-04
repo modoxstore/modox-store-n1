@@ -1,19 +1,11 @@
 export const products = [
-  {name: "5 in 1 Mobile Game Gear Combo",
-    price: 250,
-    stock: 0,
-    image: "/images/combo5in1.jpg",
+  {
+    name: "باك الهبال GAMER 🔥",
+    price: 450,
+    stock: 5,
+    image: "/images/bak-lhbal.jpg",
     rating: 5,
     reviews: 12,
-    badge: "جديد",
-  },
-   { 
-      name: "باك الهبال GAMER 🔥",
-     price: 450,
-     stock: 5,
-     image: "/images/bak-lhbal.jpg",
-     rating: 5,
-     reviews: 12,
      badge: "الأكثر مبيعاً",
   },
   {
@@ -24,6 +16,16 @@ export const products = [
     rating: 5,
     reviews: 8,
   },
+  {
+    name: "5 in 1 Mobile Game Gear Combo",
+    price: 250,
+    stock: 0,
+    image: "/images/combo5in1.jpg",
+    rating: 5,
+    reviews: 12,
+    badge: "جديد",
+  },
+  
   {
     name: "Cartoon Spray Fan",
     price: 89,

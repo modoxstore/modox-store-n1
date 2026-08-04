@@ -3,7 +3,7 @@ export const products = [
     
     name: "5 in 1 Mobile Game Gear Combo",
     price: 250,
-    stock: 6,
+    stock: 1,
     image: "/images/combo5in1.jpg",
     rating: 5,
     reviews: 12,
@@ -21,7 +21,7 @@ export const products = [
   {
     name: "USB-C HUB FD-U2",
     price: 60,
-    stock: 4,
+    stock: 3,
     image: "/images/fd-u2.png",
     rating: 5,
     reviews: 8,
@@ -87,7 +87,7 @@ export const products = [
   {
     name: "I51",
     price: 149,
-    stock: 5,
+    stock: 4,
     image: "/images/I51.PNG",
     rating: 5,
     reviews: 98,
@@ -103,7 +103,7 @@ export const products = [
   {
     name: "XS-09",
     price: 99,
-    stock: 2,
+    stock: 1,
     image: "/images/XS09.PNG",
     rating: 4,
     reviews: 64,
@@ -129,7 +129,7 @@ export const products = [
   {
     name: "Phone Cooler Premium",
     price: 250,
-    stock: 2,
+    stock: 3,
     image: "/images/phone-cooler.png",
     rating: 5,
     reviews: 11,
@@ -180,7 +180,7 @@ export const products = [
   {
     name: "AirPods Apple",
     price: 60,
-    stock: 5,
+    stock: 8,
     image: "/images/airpods-apple.png",
     rating: 5,
     reviews: 20,

@@ -1,23 +1,21 @@
 export const products = [
   {
-    
-    name: "5 in 1 Mobile Game Gear Combo",
-    price: 250,
-    stock: 1,
-    image: "/images/combo5in1.jpg",
-    rating: 5,
-    reviews: 12,
-    badge: "جديد",
-  },
-  {
-  name: "باك الهبال GAMER 🔥",
+    name: "باك الهبال GAMER 🔥",
   price: 450,
   stock: 5,
   image: "/images/bak-lhbal.jpg",
   rating: 5,
   reviews: 12,
   badge: "الأكثر مبيعاً",
-},
+  },
+  {
+  name: "5 in 1 Mobile Game Gear Combo",
+    price: 250,
+    stock: 0,
+    image: "/images/combo5in1.jpg",
+    rating: 5,
+    reviews: 12,
+    badge: "جديد",
   {
     name: "USB-C HUB FD-U2",
     price: 60,

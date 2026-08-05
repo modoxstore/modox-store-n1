@@ -103,7 +103,7 @@ export const products = [
   {
     name: "XS-09",
     price: 99,
-    stock: 1,
+    stock: 0,
     image: "/images/XS09.PNG",
     rating: 4,
     reviews: 64,

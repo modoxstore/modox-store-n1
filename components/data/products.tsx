@@ -87,7 +87,7 @@ export const products = [
   {
     name: "I51",
     price: 149,
-    stock: 4,
+    stock: 0,
     image: "/images/I51.PNG",
     rating: 5,
     reviews: 98,

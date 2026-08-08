@@ -1,19 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import {
-  Check,
-  ShoppingCart,
-  Snowflake,
-  Sparkles,
-  Wrench,
-  X,
-} from "lucide-react";
+import { Check, ShoppingCart, X, Clock } from "lucide-react";
 import { useCart } from "./CartContext";
+import { useEffect, useState } from "react";
 
 type ProductCardProps = {
   name: string;
   price: number;
+  oldPrice?: number;
+  promoEnd?: string;
   image: string;
   rating: number;
   reviews: number;
@@ -24,6 +20,8 @@ type ProductCardProps = {
 export default function ProductCard({
   name,
   price,
+  oldPrice,
+  promoEnd,
   image,
   rating,
   reviews,
@@ -32,17 +30,58 @@ export default function ProductCard({
 }: ProductCardProps) {
   const { addToCart } = useCart();
 
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    if (!promoEnd) return;
+
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [promoEnd]);
+
+  const promoEndTime = promoEnd ? new Date(promoEnd).getTime() : 0;
+
+  const isPromoActive =
+    !!oldPrice &&
+    !!promoEnd &&
+    promoEndTime > now;
+
+  const remainingTime = isPromoActive
+    ? promoEndTime - now
+    : 0;
+
+  const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+
+  const hours = Math.floor(
+    (remainingTime / (1000 * 60 * 60)) % 24
+  );
+
+  const minutes = Math.floor(
+    (remainingTime / (1000 * 60)) % 60
+  );
+
+  const seconds = Math.floor(
+    (remainingTime / 1000) % 60
+  );
+
+  // Ila promo mazal khdama = nouveau prix
+  // Ila salat = prix original
+  const currentPrice = isPromoActive
+    ? price
+    : oldPrice ?? price;
+
   const isSoldOut = stock === 0;
   const isLowStock = stock > 0 && stock <= 5;
 
   return (
-    <article
-      dir="rtl"
-      className="group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-white/10 bg-[#060a09] transition duration-500 hover:-translate-y-2 hover:border-green-400/40 hover:shadow-[0_20px_70px_rgba(34,197,94,0.12)]"
-    >
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-white/10 bg-[#050a07] transition duration-300 hover:border-green-500/40">
+
       {/* Badge */}
       {badge && (
-        <span className="absolute right-4 top-4 z-20 rounded-full border border-green-400/40 bg-black/75 px-3.5 py-1.5 text-xs font-black text-green-400 backdrop-blur-md">
+        <span className="absolute right-4 top-4 z-20 rounded-full border border-green-500/30 bg-black/70 px-3 py-1.5 text-[11px] font-bold text-green-400 backdrop-blur-md">
           🔥 {badge}
         </span>
       )}
@@ -83,10 +122,12 @@ export default function ProductCard({
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
+
         <div className="flex items-start justify-between gap-4">
+
           <div>
             <p className="text-xs font-bold text-zinc-500">
-              مبرد هاتف Gaming
+              متجر هاتف Gaming
             </p>
 
             <h3 className="mt-1 text-2xl font-black text-white transition group-hover:text-green-400">
@@ -94,19 +135,88 @@ export default function ProductCard({
             </h3>
           </div>
 
-          <p className="whitespace-nowrap text-2xl font-black text-green-400">
-            {price}
-            <span className="mr-1 text-sm">DH</span>
-          </p>
+          {/* PRICE */}
+          <div className="text-left">
+
+            {isPromoActive && oldPrice && (
+              <div className="mb-1 flex items-center gap-2">
+
+                <span className="text-sm font-bold text-zinc-500 line-through decoration-red-500 decoration-2">
+                  {oldPrice} DH
+                </span>
+
+                <span className="rounded-md bg-red-500/15 px-2 py-0.5 text-[10px] font-black text-red-400">
+                  PROMO 🔥
+                </span>
+
+              </div>
+            )}
+
+            <p
+              className={`whitespace-nowrap font-black ${
+                isPromoActive
+                  ? "text-3xl text-green-400"
+                  : "text-2xl text-green-400"
+              }`}
+            >
+              {currentPrice}
+
+              <span className="mr-1 text-sm">
+                DH
+              </span>
+            </p>
+
+          </div>
         </div>
+
+        {/* COUNTDOWN */}
+        {isPromoActive && (
+          <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-3">
+
+            <div className="mb-2 flex items-center justify-center gap-2 text-xs font-black text-red-400">
+              <Clock size={15} />
+              العرض ينتهي خلال
+            </div>
+
+            <div
+              className="flex items-center justify-center gap-2"
+              dir="ltr"
+            >
+
+              <TimeBox value={days} label="يوم" />
+
+              <span className="font-black text-zinc-500">
+                :
+              </span>
+
+              <TimeBox value={hours} label="ساعة" />
+
+              <span className="font-black text-zinc-500">
+                :
+              </span>
+
+              <TimeBox value={minutes} label="دقيقة" />
+
+              <span className="font-black text-zinc-500">
+                :
+              </span>
+
+              <TimeBox value={seconds} label="ثانية" />
+
+            </div>
+          </div>
+        )}
 
         {/* Rating */}
         <div className="mt-3 flex items-center gap-2">
+
           <div
             className="flex text-sm text-yellow-400"
             aria-label={`${rating} من 5 نجوم`}
           >
-            <span>{"★".repeat(rating)}</span>
+            <span>
+              {"★".repeat(rating)}
+            </span>
 
             <span className="text-zinc-700">
               {"★".repeat(5 - rating)}
@@ -116,10 +226,12 @@ export default function ProductCard({
           <span className="text-xs text-zinc-500">
             {reviews} تقييم
           </span>
+
         </div>
 
-        {/* Stock under price */}
+        {/* Stock */}
         <div className="mt-4">
+
           {isSoldOut ? (
             <p className="font-black text-red-400">
               🔴 نفذت الكمية
@@ -133,7 +245,9 @@ export default function ProductCard({
               🟢 المخزون: {stock} قطعة
             </p>
           )}
+
         </div>
+
         {/* Add to cart */}
         <button
           type="button"
@@ -143,7 +257,7 @@ export default function ProductCard({
 
             addToCart({
               name,
-              price,
+              price: currentPrice,
               image,
             });
           }}
@@ -154,9 +268,36 @@ export default function ProductCard({
           }`}
         >
           <ShoppingCart size={20} />
-          {isSoldOut ? "غير متوفر حالياً" : "أضف للسلة"}
+
+          {isSoldOut
+            ? "غير متوفر حالياً"
+            : "أضف للسلة"}
         </button>
+
       </div>
     </article>
+  );
+}
+
+/* Countdown box */
+function TimeBox({
+  value,
+  label,
+}: {
+  value: number;
+  label: string;
+}) {
+  return (
+    <div className="min-w-[45px] rounded-lg bg-black/50 px-2 py-1.5 text-center">
+
+      <p className="text-base font-black text-white">
+        {String(value).padStart(2, "0")}
+      </p>
+
+      <p className="text-[8px] font-bold text-zinc-500">
+        {label}
+      </p>
+
+    </div>
   );
 }

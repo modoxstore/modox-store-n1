@@ -69,7 +69,7 @@ export const products = [
   },
   {
     name: "Electric Mosquito Swatter",
-    price: 120,
+    price: 90,
     stock: 5,
     image: "/images/mosquito.png",
     rating: 5,

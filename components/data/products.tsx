@@ -28,7 +28,7 @@ export const products = [
   
   {
     name: "Cartoon Spray Fan",
-    price: 89,
+    price: 65,
     stock: 4,
     image: "/images/cartoon-fan.png",
     rating: 5,
@@ -37,7 +37,7 @@ export const products = [
   },
   {
     name: "Capybara Fan",
-    price: 59,
+    price: 55,
     stock: 5,
     image: "/images/capybara-fan.png",
     rating: 5,
@@ -45,7 +45,7 @@ export const products = [
   },
   {
     name: "Baseus 65W Cable",
-    price: 80,
+    price: 50,
     stock: 5,
     image: "/images/baseus65w.png",
     rating: 5,

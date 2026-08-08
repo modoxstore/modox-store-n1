@@ -91,7 +91,7 @@ export default function Footer() {
 
           <div className="mt-6 space-y-4 text-sm text-zinc-400">
             <a
-              href="https://wa.me/212708872257"
+              href="https://wa.me/212708270909"
               target="_blank"
               rel="noreferrer"
               className="block transition hover:text-green-400"
@@ -135,7 +135,7 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://wa.me/212708872257"
+              href="https://wa.me/212708270909"
               target="_blank"
               rel="noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-2xl border border-green-400/30 bg-green-400/10 text-green-400 transition hover:bg-green-400 hover:text-black"

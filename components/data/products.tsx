@@ -119,17 +119,6 @@ export const products = [
     reviews: 11,
   },
   {
-  name: "Power Bank 30000mAh",
-  price: 250,
-  oldPrice: 300,
-  promoEnd: "2026-08-11T13:55:00+01:00",
-  stock: 0,
-  image: "/images/powerbank30000.png",
-  rating: 5,
-  reviews: 6,
-  badge: "🔥 PROMO",
-  },
-  {
     name: "Fast Charger 4 in 1",
   price: 90,
   oldPrice: 150,

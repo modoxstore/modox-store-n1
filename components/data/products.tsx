@@ -2,7 +2,7 @@ export const products = [
   {
     name: "باك الهبال GAMER 🔥",
     price: 450,
-    stock: 2,
+    stock: 1,
     image: "/images/bak-lhbal.jpg",
     rating: 5,
     reviews: 12,
@@ -11,7 +11,7 @@ export const products = [
   {
     name: "S6 Phone Cooler ",
     price: 199,
-    stock: 46,
+    stock: 44,
     promoEnd: "2026-08-11T13:55:00+01:00",
     image: "/images/s6-cooler.png",
     rating: 5,
@@ -29,7 +29,7 @@ export const products = [
   {
     name: "USB-C HUB FD-U4",
     price: 60,
-    stock: 1,
+    stock: 0,
     image: "/images/fd-u4.png",
     rating: 5,
     reviews: 8,
@@ -96,7 +96,7 @@ export const products = [
     {
     name: "Power Bank 9000W",
     price: 199,
-    stock: 5,
+    stock: 4,
     image: "/images/powerbank9000w.png",
     rating: 5,
     reviews: 7,
@@ -124,7 +124,7 @@ export const products = [
   price: 90,
   oldPrice: 150,
   promoEnd: "2026-08-11T13:55:00+01:00",
-  stock: 2,
+  stock: 1,
   image: "/images/charger4in1.png",
   rating: 5,
   reviews: 13,

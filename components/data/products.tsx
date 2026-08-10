@@ -9,6 +9,15 @@ export const products = [
      badge: "الأكثر مبيعاً",
   },
   {
+    name: "S6 Phone Cooler ",
+    price: 250,
+    stock: 46,
+    image: "/images/s6-cooler.png",
+    rating: 5,
+    reviews: 10,
+    badge: "الأكثر مبيعاً",
+  },
+  {
     name: "USB-C HUB FD-U2",
     price: 60,
     stock: 5,

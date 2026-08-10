@@ -104,7 +104,7 @@ export const products = [
   {
     name: "Phone Cooler Premium",
     price: 250,
-    stock: 1,
+    stock: 0,
     image: "/images/phone-cooler.png",
     rating: 5,
     reviews: 11,

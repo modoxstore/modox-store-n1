@@ -10,7 +10,7 @@ export const products = [
   },
   {
     name: "S6 Phone Cooler ",
-    price: 250,
+    price: 150,
     stock: 46,
     image: "/images/s6-cooler.png",
     rating: 5,

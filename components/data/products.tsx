@@ -37,7 +37,7 @@ export const products = [
   {
     name: "5 in 1 Mobile Game Gear Combo",
     price: 255,
-    stock: 10,
+    stock: 4,
     image: "/images/combo5in1.jpg",
     rating: 5,
     reviews: 12,

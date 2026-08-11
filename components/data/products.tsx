@@ -105,7 +105,7 @@ export const products = [
   {
     name: "RGB Phone Cooler",
     price: 120,
-    stock: 3,
+    stock: 0,
     image: "/images/rgb-cooler.png",
     rating: 5,
     reviews: 18,

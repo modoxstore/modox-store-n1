@@ -10,98 +10,90 @@ import {
   ShoppingBag,
   User,
 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartContext";
-import { supabase } from "../../lib/supabase";
 export default function CheckoutPage() {
   const { items, totalPrice } = useCart();
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
+  const [cityId, setCityId] = useState("");
+  const [citySearch, setCitySearch] = useState("");
+  const [showCities, setShowCities] = useState(false);
+  const [zones, setZones] = useState<
+    { city_id: number; name: string; delivered_price: number }[]
+  >([]);
+  const [citiesError, setCitiesError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/ozon/cities")
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to load cities");
+        return response.json();
+      })
+      .then((result) => {
+        if (!cancelled) setZones(result.cities ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setCitiesError("تعذر تحميل المدن");
+      });
+
+    return () => { cancelled = true; };
+  }, []);
+
+  const selectedZone = zones.find(
+    (zone) => zone.city_id === Number(cityId)
+  );
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const checkoutKeyRef = useRef<string | null>(null);
+
 
   const sendOrder = async (
     event: FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
 
-    if (items.length === 0) {
-      alert("السلة فارغة");
-      return;
-    }
+    if (isSubmitting || items.length === 0) return;
 
-    if (isSubmitting) {
-      return;
+    if (!checkoutKeyRef.current) {
+      checkoutKeyRef.current = crypto.randomUUID();
     }
-
     setIsSubmitting(true);
 
-    const productsText = items
-      .map(
-        (item) =>
-          `${item.name}
-السعر: ${item.price} DH
-الكمية: ${item.quantity}
-المجموع: ${item.price * item.quantity} DH`,
-      )
-      .join("\n\n");
-
-    const message = `
-طلب جديد من MODOX STORE
-
-الاسم الكامل: ${fullName}
-رقم الهاتف: ${phone}
-المدينة: ${city}
-العنوان: ${address}
-
-المنتجات:
-${productsText}
-
-المجموع: ${totalPrice} DH
-طريقة الدفع: الدفع عند الاستلام
-
-ملاحظة:
-${note || "لا توجد ملاحظة"}
-    `.trim();
-
     try {
-      const { error } = await supabase
-        .from("orders")
-        .insert({
-          customer_name: fullName.trim(),
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          checkoutKey: checkoutKeyRef.current,
+          customerName: fullName.trim(),
           phone: phone.trim(),
-          city: city.trim(),
+          cityId: Number(cityId),
           address: address.trim(),
-          total: totalPrice,
-          status: "new",
-        });
+          items: items.map((item) => ({
+            name: item.name,
+            quantity: item.quantity,
+          })),
+        }),
+      });
 
-      if (error) {
-        console.error("Supabase error:", error);
+      const result = await response.json();
 
-        alert(
-          "وقع مشكل فتسجيل الطلب. عاود حاول من جديد.",
-        );
-
-        return;
+      if (!response.ok) {
+        throw new Error(result.error || "تعذر تسجيل الطلب");
       }
 
-      const storeWhatsApp = "212708270909"
-
-      const whatsappUrl =
-        `https://wa.me/${storeWhatsApp}?text=${encodeURIComponent(
-          message,
-        )}`;
-
-      window.open(whatsappUrl, "_blank");
+      alert("تم تسجيل طلبك بنجاح! رقم الطلب: " + result.orderId);
+      window.location.href = "/shop";
     } catch (error) {
-      console.error("Order error:", error);
-
       alert(
-        "وقع مشكل فتسجيل الطلب. تأكد من الإنترنت وعاود حاول.",
+        error instanceof Error
+          ? error.message
+          : "وقع مشكل أثناء تسجيل الطلب"
       );
     } finally {
       setIsSubmitting(false);
@@ -237,28 +229,61 @@ ${note || "لا توجد ملاحظة"}
                 </div>
               </label>
 
+
               <label className="block">
                 <span className="mb-2 block text-sm font-bold text-zinc-300">
-                  المدينة
+                  المدينة / المنطقة
                 </span>
 
                 <div className="relative">
-                  <MapPin
-                    size={18}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500"
-                  />
-
                   <input
                     type="text"
                     required
-                    value={city}
-                    onChange={(event) =>
-                      setCity(event.target.value)
-                    }
-                    placeholder="مثال: الدار البيضاء"
-                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-green-400"
+                    value={citySearch}
+                    onChange={(event) => {
+                      setCitySearch(event.target.value);
+                      setCityId("");
+                      setShowCities(true);
+                    }}
+                    onFocus={() => setShowCities(true)}
+                    placeholder="قلب على المدينة أو المنطقة..."
+                    className="w-full rounded-xl border border-white/10 bg-[#111] p-4 text-white outline-none focus:border-green-400"
                   />
+
+                  {showCities && (
+                    <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-white/10 bg-[#151515] shadow-2xl">
+                      {zones
+                        .filter((zone) =>
+                          zone.name.toLowerCase().includes(
+                            citySearch.trim().toLowerCase()
+                          )
+                        )
+                        .slice(0, 30)
+                        .map((zone) => (
+                          <button
+                            type="button"
+                            key={zone.city_id}
+                            onClick={() => {
+                              setCityId(String(zone.city_id));
+                              setCitySearch(zone.name);
+                              setShowCities(false);
+                            }}
+                            className="flex w-full justify-between border-b border-white/5 px-4 py-3 text-right hover:bg-green-400/10"
+                          >
+                            <span>{zone.name}</span>
+                            <span className="text-green-400">
+                              {zone.delivered_price} DH
+                            </span>
+                          </button>
+                        ))}
+                    </div>
+                  )}
                 </div>
+                {citiesError && (
+                  <p className="mt-2 text-sm text-red-400">
+                    {citiesError}
+                  </p>
+                )}
               </label>
 
               <label className="block">
@@ -323,12 +348,12 @@ ${note || "لا توجد ملاحظة"}
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !selectedZone}
               className="mt-7 w-full rounded-xl bg-green-400 px-6 py-4 text-lg font-black text-black transition hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting
                 ? "جاري تسجيل الطلب..."
-                : "إرسال الطلب عبر WhatsApp"}
+                : "تأكيد الطلب"}
             </button>
           </form>
 
@@ -376,13 +401,25 @@ ${note || "لا توجد ملاحظة"}
             </div>
 
             <div className="mt-6 border-t border-white/10 pt-5">
+              <div className="mb-3 flex justify-between text-sm">
+                <span>المنتجات</span>
+                <span>{totalPrice} DH</span>
+              </div>
+              <div className="mb-4 flex justify-between text-sm">
+                <span>التوصيل Ozon Express</span>
+                <span>
+                  {selectedZone
+                    ? selectedZone.delivered_price + " DH"
+                    : "اختار المدينة"}
+                </span>
+              </div>
               <div className="flex items-center justify-between">
                 <span className="text-zinc-400">
                   المجموع
                 </span>
 
                 <span className="text-3xl font-black text-green-400">
-                  {totalPrice} DH
+                  {totalPrice + (selectedZone?.delivered_price ?? 0)} DH
                 </span>
               </div>
 

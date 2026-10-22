@@ -1,14 +1,5 @@
 export const products = [
   {
-    name: "باك الهبال GAMER 🔥",
-    price: 450,
-    stock: 1,
-    image: "/images/bak-lhbal.jpg",
-    rating: 5,
-    reviews: 12,
-     badge: "الأكثر مبيعاً",
-  },
-  {
     name: "S6 Phone Cooler ",
     price: 199,
     stock: 44,

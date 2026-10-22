@@ -69,9 +69,7 @@ export default function ProductCard({
 
   // Ila promo mazal khdama = nouveau prix
   // Ila salat = prix original
-  const currentPrice = isPromoActive
-    ? price
-    : oldPrice ?? price;
+  const currentPrice = price;
 
   const isSoldOut = stock === 0;
   const isLowStock = stock > 0 && stock <= 5;
@@ -110,6 +108,7 @@ export default function ProductCard({
         <div className="absolute inset-x-12 bottom-8 h-14 rounded-full bg-green-400/15 blur-2xl transition duration-500 group-hover:bg-green-400/25" />
 
         <Image
+          unoptimized={image.includes("/storage/v1/object/public/product-images/")}
           src={image}
           alt={name}
           fill

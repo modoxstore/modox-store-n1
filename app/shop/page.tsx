@@ -1,9 +1,13 @@
-import Navbar from "@/components/Navbar";
+﻿import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/components/data/products";
+import { getStoreProducts } from "@/lib/storeProducts";
 
-export default function ShopPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ShopPage() {
+  const products = await getStoreProducts();
+
   return (
     <>
       <Navbar />
@@ -17,14 +21,20 @@ export default function ShopPage() {
             جميع المنتجات
           </h1>
 
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard
-                key={product.name}
-                {...product}
-              />
-            ))}
-          </div>
+          {products.length === 0 ? (
+            <p className="text-zinc-400">
+              لا توجد منتجات متاحة حالياً.
+            </p>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  {...product}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </main>
 

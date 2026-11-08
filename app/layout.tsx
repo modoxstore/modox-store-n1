@@ -33,6 +33,11 @@ export const metadata: Metadata = {
   creator: "MODOX STORE",
   publisher: "MODOX STORE",
 
+  // Google AdSense Verification
+  other: {
+    "google-adsense-account": "ca-pub-4947064544666047",
+  },
+
   openGraph: {
     title: "MODOX STORE | إكسسوارات Gaming",
     description:

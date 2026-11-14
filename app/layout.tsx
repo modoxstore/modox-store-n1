@@ -3,48 +3,6 @@ import "./globals.css";
 import { CartProvider } from "@/components/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import { Analytics } from "@vercel/analytics/next";
-import {
-  Chakra_Petch,
-  IBM_Plex_Sans_Arabic,
-  JetBrains_Mono,
-  Lalezar,
-  Saira_Stencil_One,
-} from "next/font/google";
-
-const stencil = Saira_Stencil_One({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-stencil",
-  display: "swap",
-});
-
-const chakra = Chakra_Petch({
-  weight: ["500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-chakra",
-  display: "swap",
-});
-
-const plexArabic = IBM_Plex_Sans_Arabic({
-  weight: ["400", "500", "600", "700"],
-  subsets: ["arabic", "latin"],
-  variable: "--font-plex-arabic",
-  display: "swap",
-});
-
-const arabicDisplay = Lalezar({
-  weight: "400",
-  subsets: ["arabic", "latin"],
-  variable: "--font-arabic-display",
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  weight: ["400", "600"],
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -110,9 +68,16 @@ export default function RootLayout({
   return (
     <html
       lang="ar"
-      dir="rtl"
-      className={`${stencil.variable} ${chakra.variable} ${plexArabic.variable} ${arabicDisplay.variable} ${jetbrains.variable}`}
-    >
+      dir="rtl">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Lalezar&family=Saira+Stencil+One&display=swap"
+        />
+      </head>
       <body>
         <CartProvider>
           {children}

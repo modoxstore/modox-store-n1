@@ -19,11 +19,11 @@
   --color-t-epic: #b48bff;
   --color-t-legend: #ff7a1a;
 
-  --font-display: var(--font-stencil), "Chakra Petch", Impact, sans-serif;
-  --font-head: var(--font-chakra), var(--font-arabic-display), system-ui, sans-serif;
-  --font-body: var(--font-plex-arabic), "Segoe UI", Tahoma, system-ui, sans-serif;
-  --font-arabic: var(--font-arabic-display), var(--font-plex-arabic), system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
+  --font-display: "Saira Stencil One", "Chakra Petch", Impact, sans-serif;
+  --font-head: "Chakra Petch", "Lalezar", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --font-arabic: "Lalezar", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 
 :root {

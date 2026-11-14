@@ -8,6 +8,8 @@ type ConfirmationInput = {
   messageId: string;
   phone: string;
   action: ConfirmationAction;
+  // Order ID carried in the quick reply payload, when present.
+  payloadOrderId?: string;
 };
 
 export async function processWhatsAppConfirmation(
@@ -25,6 +27,28 @@ export async function processWhatsAppConfirmation(
     !["confirmed", "cancelled"].includes(input.action)
   ) {
     return false;
+  }
+
+  // The payload must point to the same order as the message being answered.
+  if (input.payloadOrderId !== undefined) {
+    const { data: sent, error: lookupError } = await supabaseAdmin
+      .from("whatsapp_order_confirmations")
+      .select("order_id,phone")
+      .eq("message_id", input.messageId)
+      .maybeSingle();
+
+    if (lookupError) {
+      throw new Error("Could not look up WhatsApp confirmation");
+    }
+
+    if (
+      !sent ||
+      sent.order_id !== input.payloadOrderId ||
+      sent.phone !== input.phone
+    ) {
+      console.warn("WhatsApp reply does not match its order; ignored");
+      return false;
+    }
   }
 
   // Returns the order ID only for a new, valid confirmation.

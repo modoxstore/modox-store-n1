@@ -1,4 +1,5 @@
 import { sendAndSaveConfirmation } from "@/lib/whatsappSendAndSave";
+import { getTestRecipients, isRecipientAllowed } from "@/lib/whatsapp";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -45,6 +46,8 @@ export async function POST(request: NextRequest) {
 
     const body = JSON.parse(raw);
     const { checkoutKey, customerName, phone, cityId, address, items } = body;
+    // Only message customers who ticked the WhatsApp consent box.
+    const whatsappConsent = body.whatsappConsent === true;
 
     if (
       typeof checkoutKey !== "string" ||
@@ -136,7 +139,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Checkout and order creation must succeed independently of WhatsApp.
-    if (process.env.WHATSAPP_SENDING_ENABLED === "true") {
+    if (process.env.WHATSAPP_SENDING_ENABLED === "true" && whatsappConsent) {
       const { data: order, error: lookupError } = await supabaseAdmin
         .from("orders")
         .select("id,phone,customer_name,total,address,source,status")
@@ -148,8 +151,11 @@ export async function POST(request: NextRequest) {
         console.error("WhatsApp order lookup failed");
       } else if (
         order.status === "new" &&
-        !/TEST/i.test(order.customer_name ?? "") &&
-        !/DO NOT SHIP/i.test(order.address ?? "")
+        isRecipientAllowed(order.phone) &&
+        // Test orders are messaged only to allow-listed test numbers.
+        (getTestRecipients() !== null ||
+          (!/TEST/i.test(order.customer_name ?? "") &&
+            !/DO NOT SHIP/i.test(order.address ?? "")))
       ) {
         try {
           await sendAndSaveConfirmation({

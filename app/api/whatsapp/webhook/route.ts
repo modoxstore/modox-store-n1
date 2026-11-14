@@ -1,4 +1,5 @@
 import { processWhatsAppConfirmation } from "@/lib/whatsappConfirmation";
+import { CANCEL_PREFIX, CONFIRM_PREFIX } from "@/lib/whatsapp";
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
@@ -72,10 +73,25 @@ export async function POST(request: NextRequest) {
               ? message.interactive?.button_reply?.title
               : null;
 
-        const action =
-          text === "تأكيد الطلب" ? "confirmed" :
-          text === "إلغاء الطلب" ? "cancelled" :
-          null;
+        const payload: unknown =
+          message.type === "button" ? message.button?.payload : null;
+
+        // Prefer the per-order payload; fall back to the button title
+        // for messages sent before payloads were added.
+        let action: "confirmed" | "cancelled" | null = null;
+        let payloadOrderId: string | undefined;
+
+        if (typeof payload === "string" && payload.startsWith(CONFIRM_PREFIX)) {
+          action = "confirmed";
+          payloadOrderId = payload.slice(CONFIRM_PREFIX.length);
+        } else if (typeof payload === "string" && payload.startsWith(CANCEL_PREFIX)) {
+          action = "cancelled";
+          payloadOrderId = payload.slice(CANCEL_PREFIX.length);
+        } else if (text === "تأكيد الطلب") {
+          action = "confirmed";
+        } else if (text === "إلغاء الطلب") {
+          action = "cancelled";
+        }
 
         const originalMessageId = message.context?.id;
         const customerPhone = message.from;
@@ -88,6 +104,7 @@ export async function POST(request: NextRequest) {
             messageId: originalMessageId,
             phone: customerPhone,
             action,
+            payloadOrderId,
           });
         }
       }

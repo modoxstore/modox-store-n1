@@ -48,6 +48,7 @@ export default function CheckoutPage() {
   );
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const checkoutKeyRef = useRef<string | null>(null);
 
@@ -74,6 +75,7 @@ export default function CheckoutPage() {
           phone: phone.trim(),
           cityId: Number(cityId),
           address: address.trim(),
+          whatsappConsent,
           items: items.map((item) => ({
             name: item.name,
             quantity: item.quantity,
@@ -345,6 +347,25 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
+
+            <label
+              htmlFor="whatsapp-consent"
+              className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-black/30 p-4"
+            >
+              <input
+                id="whatsapp-consent"
+                type="checkbox"
+                checked={whatsappConsent}
+                onChange={(event) =>
+                  setWhatsappConsent(event.target.checked)
+                }
+                className="mt-1 h-4 w-4 shrink-0 accent-green-400"
+              />
+
+              <span className="text-sm leading-6 text-zinc-400">
+                موافق نتوصل برسالة WhatsApp من MODOX STORE فيها تفاصيل الطلب ديالي باش نأكدو ولا نلغيه.
+              </span>
+            </label>
 
             <button
               type="submit"

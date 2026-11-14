@@ -18,12 +18,12 @@ export default async function OrderDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; done?: string }>;
+  searchParams: Promise<{ error?: string; done?: string; ozon?: string }>;
 }) {
   await requireAdmin();
 
   const { id } = await params;
-  const { error: actionError, done } = await searchParams;
+  const { error: actionError, done, ozon: ozonSendStatus } = await searchParams;
 
   if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) {
     notFound();
@@ -113,6 +113,25 @@ export default async function OrderDetailPage({
         {done && (
           <div role="status" className="mt-5 rounded-xl border border-green-500/40 bg-green-500/10 p-4 font-bold text-green-300">
             {done === "confirmed" ? "تم تأكيد الطلب." : "تم إلغاء الطلب ورجع المخزون."}
+          </div>
+        )}
+
+        {ozonSendStatus && (
+          <div
+            role="status"
+            className={`mt-3 rounded-xl border p-4 font-bold ${
+              ozonSendStatus === "created"
+                ? "border-green-500/40 bg-green-500/10 text-green-300"
+                : "border-orange-500/40 bg-orange-500/10 text-orange-300"
+            }`}
+          >
+            {ozonSendStatus === "created"
+              ? "تصيفط الطلب لـ Ozon Express وتصاوب الكولي."
+              : ozonSendStatus === "disabled"
+                ? "Ozon مسدود دابا: الكولي ما تصاوبش."
+                : ozonSendStatus === "already_claimed"
+                  ? "الطلب دخل لـ Ozon من قبل."
+                  : "Ozon ما قبلش الطلب. شوف الخانة ديال Ozon Express لتحت."}
           </div>
         )}
 
@@ -235,7 +254,7 @@ export default async function OrderDetailPage({
         </div>
 
         <p className="mt-6 text-xs text-zinc-500">
-          التأكيد هنا كيبدل حالة الطلب فقط، وما كيرسلش الشحنة لـ Ozon.
+          التأكيد هنا كيبدل حالة الطلب وكيصيفطو لـ Ozon Express إلا كان Ozon مفعل.
         </p>
       </div>
     </main>

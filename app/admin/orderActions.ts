@@ -4,10 +4,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { sendConfirmedOrderToOzon } from "@/lib/ozonSend";
 
 // Confirms or cancels a new V2 order from the admin.
 // admin_change_v2_order_status checks the order is still "new",
 // blocks test orders, and puts stock back on cancel.
+// A confirmation also creates the Ozon parcel (when Ozon is enabled),
+// the same way a WhatsApp confirmation does.
 export async function changeOrderStatus(formData: FormData) {
   await requireAdmin();
 
@@ -26,15 +29,33 @@ export async function changeOrderStatus(formData: FormData) {
     p_action: action,
   });
 
-  revalidatePath("/admin/orders");
-  revalidatePath(`/admin/orders/${orderId}`);
-
   if (error) {
     console.error("Admin status change failed:", error.message);
+    revalidatePath(`/admin/orders/${orderId}`);
     redirect(
       `/admin/orders/${orderId}?error=${encodeURIComponent(error.message)}`
     );
   }
 
-  redirect(`/admin/orders/${orderId}?done=${action}`);
+  let ozon = "";
+
+  if (action === "confirmed") {
+    try {
+      const result = await sendConfirmedOrderToOzon(orderId);
+      ozon = result.status;
+    } catch (ozonError) {
+      console.error(
+        "Admin Ozon send failed:",
+        ozonError instanceof Error ? ozonError.message : "Unknown error"
+      );
+      ozon = "error";
+    }
+  }
+
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+
+  redirect(
+    `/admin/orders/${orderId}?done=${action}${ozon ? `&ozon=${ozon}` : ""}`
+  );
 }

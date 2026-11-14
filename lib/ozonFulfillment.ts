@@ -96,7 +96,10 @@ export async function prepareOzonStockOrder(orderId: string) {
 
   const formFields = {
     "parcel-receiver": order.customer_name,
-    "parcel-phone": order.phone,
+    // Ozon expects the local format: 06XXXXXXXX / 07XXXXXXXX.
+    "parcel-phone": /^212[567]\d{8}$/.test(order.phone)
+      ? "0" + order.phone.slice(3)
+      : order.phone,
     "parcel-city": String(order.ozon_city_id),
     "parcel-address": order.address,
     // Cash collected at the door: products + delivery, same total the

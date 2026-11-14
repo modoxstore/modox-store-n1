@@ -14,6 +14,16 @@ export async function sendConfirmedOrderToOzon(orderId: string) {
     throw new Error("Ozon credentials missing");
   }
 
+  // A previous attempt that Ozon explicitly refused created no parcel,
+  // so its record can be cleared to allow a new attempt.
+  const { error: clearError } = await supabaseAdmin
+    .from("ozon_fulfillments")
+    .delete()
+    .eq("order_id", orderId)
+    .eq("status", "failed");
+
+  if (clearError) throw new Error("Could not clear failed Ozon attempt");
+
   // Validate order and products before claiming fulfillment.
   const prepared = await prepareOzonStockOrder(orderId);
 
@@ -38,7 +48,7 @@ export async function sendConfirmedOrderToOzon(orderId: string) {
   // From this point, never automatically retry the shipment.
   // Network failure may mean Ozon created the parcel.
   const updateFulfillment = async (
-    status: "created" | "needs_review",
+    status: "created" | "needs_review" | "failed",
     tracking: string | null,
     response: unknown,
     lastError: string | null
@@ -98,7 +108,28 @@ export async function sendConfirmedOrderToOzon(orderId: string) {
       | { RESULT?: string; MESSAGE?: string }
       | undefined;
 
-    const tracking = result["TRACKING-NUMBER"];
+    // Ozon answers {"ADD-PARCEL": {"RESULT", "MESSAGE", "NEW-PARCEL": {...}}}
+    const addParcel = result["ADD-PARCEL"] as
+      | {
+          RESULT?: string;
+          MESSAGE?: string;
+          "NEW-PARCEL"?: { "TRACKING-NUMBER"?: unknown };
+        }
+      | undefined;
+
+    const tracking =
+      addParcel?.["NEW-PARCEL"]?.["TRACKING-NUMBER"] ??
+      result["TRACKING-NUMBER"];
+
+    // Ozon explicitly refused: no parcel exists, so a retry is safe.
+    if (checkApi?.RESULT === "ERROR" || addParcel?.RESULT === "ERROR") {
+      const message =
+        addParcel?.MESSAGE || checkApi?.MESSAGE || "Ozon returned an error";
+
+      await updateFulfillment("failed", null, result, `Ozon: ${message}`);
+
+      return { status: "failed" as const, message };
+    }
 
     if (
       response.ok &&

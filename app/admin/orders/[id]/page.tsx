@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { changeOrderStatus } from "../../orderActions";
+import { changeOrderStatus, retryOzon } from "../../orderActions";
 
 export const dynamic = "force-dynamic";
 
@@ -249,6 +249,17 @@ export default async function OrderDetailPage({
               <p className="mt-3 break-words text-sm text-orange-300">
                 {ozon.last_error}
               </p>
+            )}
+            {order.status === "confirmed" && ozon?.status === "failed" && (
+              <form action={retryOzon} className="mt-4">
+                <input type="hidden" name="orderId" value={order.id} />
+                <button
+                  type="submit"
+                  className="rounded-xl bg-green-400 px-5 py-2 font-black text-black hover:bg-green-300"
+                >
+                  عاود صيفط لـ Ozon
+                </button>
+              </form>
             )}
           </section>
         </div>

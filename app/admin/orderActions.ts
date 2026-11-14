@@ -59,3 +59,31 @@ export async function changeOrderStatus(formData: FormData) {
     `/admin/orders/${orderId}?done=${action}${ozon ? `&ozon=${ozon}` : ""}`
   );
 }
+
+// Sends a confirmed order to Ozon again after Ozon refused it
+// (status "failed"). sendConfirmedOrderToOzon only clears "failed"
+// attempts, so a parcel that may exist is never sent twice.
+export async function retryOzon(formData: FormData) {
+  await requireAdmin();
+
+  const orderId = String(formData.get("orderId") ?? "");
+
+  if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(orderId)) {
+    redirect("/admin/orders");
+  }
+
+  let ozon = "error";
+
+  try {
+    const result = await sendConfirmedOrderToOzon(orderId);
+    ozon = result.status;
+  } catch (ozonError) {
+    console.error(
+      "Admin Ozon retry failed:",
+      ozonError instanceof Error ? ozonError.message : "Unknown error"
+    );
+  }
+
+  revalidatePath(`/admin/orders/${orderId}`);
+  redirect(`/admin/orders/${orderId}?ozon=${ozon}`);
+}

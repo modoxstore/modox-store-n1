@@ -1,5 +1,6 @@
 import { processWhatsAppConfirmation } from "@/lib/whatsappConfirmation";
 import { CANCEL_PREFIX, CONFIRM_PREFIX } from "@/lib/whatsapp";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
@@ -64,6 +65,35 @@ export async function POST(request: NextRequest) {
   for (const entry of event.entry ?? []) {
     for (const change of entry.changes ?? []) {
       if (change.field !== "messages") continue;
+
+      // Delivery updates from Meta (sent / delivered / read / failed).
+      // Meta accepting a send does not mean it was delivered, so a
+      // "failed" status marks the confirmation row as failed.
+      for (const status of change.value?.statuses ?? []) {
+        const errors = (status.errors ?? []).map(
+          (e: { code?: number; title?: string; error_data?: { details?: string } }) => ({
+            code: e.code,
+            title: e.title,
+            details: e.error_data?.details,
+          })
+        );
+
+        console.info("WhatsApp status", {
+          status: status.status,
+          messageId: status.id,
+          errors,
+        });
+
+        if (status.status === "failed" && typeof status.id === "string") {
+          const { error } = await supabaseAdmin
+            .from("whatsapp_order_confirmations")
+            .update({ status: "failed" })
+            .eq("message_id", status.id)
+            .eq("status", "sent");
+
+          if (error) console.error("Could not mark WhatsApp message failed");
+        }
+      }
 
       for (const message of change.value?.messages ?? []) {
         const text =

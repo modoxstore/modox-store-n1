@@ -46,6 +46,14 @@ const studioPhotos: Record<string, string> = {
   "/images/JC-21S.png": "/images/v2/JC-21S.webp",
   "/images/JC-22S.png": "/images/v2/JC-22S.webp",
   "/images/fd-u2.png": "/images/v2/usb-c-hub-fd-u2.webp",
+  "/images/bluetooth-keyboard.png": "/images/v2/bluetooth-keyboard.webp",
+  "/images/mosquito.png": "/images/v2/mosquito-swatter.webp",
+  "/images/finger-sleeves.png": "/images/v2/finger-sleeves.webp",
+  "/images/rgb-cooler.png": "/images/v2/rgb-cooler.webp",
+  "/images/S38.PNG": "/images/v2/s38-cooler.webp",
+  "/images/I51.PNG": "/images/v2/s51-cooler.webp",
+  "/images/XS06.PNG": "/images/v2/xs06-cooler.webp",
+  "/images/XS09.PNG": "/images/v2/xs09-cooler.webp",
 };
 
 export function displayImage(image: string): string {

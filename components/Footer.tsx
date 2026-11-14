@@ -80,6 +80,13 @@ export default function Footer() {
             >
               لماذا MODOX؟
             </Link>
+
+            <Link
+              href="/privacy"
+              className="transition hover:text-green-400"
+            >
+              سياسة الخصوصية
+            </Link>
           </div>
         </div>
 

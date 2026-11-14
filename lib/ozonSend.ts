@@ -18,10 +18,10 @@ export async function sendConfirmedOrderToOzon(orderId: string) {
   const prepared = await prepareOzonStockOrder(orderId);
 
   if (
-    !Number.isSafeInteger(prepared.productAmount) ||
-    prepared.productAmount <= 0
+    !Number.isSafeInteger(prepared.codAmount) ||
+    prepared.codAmount <= 0
   ) {
-    throw new Error("Invalid product COD amount");
+    throw new Error("Invalid COD amount");
   }
 
   const { data: claimed, error: claimError } =
@@ -69,7 +69,7 @@ export async function sendConfirmedOrderToOzon(orderId: string) {
       form.set(key, String(value));
     }
 
-    form.set("parcel-price", String(prepared.productAmount));
+    form.set("parcel-price", String(prepared.codAmount));
     form.set("parcel-stock", "1");
 
     const url =

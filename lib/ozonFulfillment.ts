@@ -99,7 +99,9 @@ export async function prepareOzonStockOrder(orderId: string) {
     "parcel-phone": order.phone,
     "parcel-city": String(order.ozon_city_id),
     "parcel-address": order.address,
-    "parcel-price": String(order.total - order.delivery_fee),
+    // Cash collected at the door: products + delivery, same total the
+    // customer sees in the WhatsApp confirmation.
+    "parcel-price": String(order.total),
     "parcel-stock": "1",
     "products": JSON.stringify(products),
   };
@@ -108,8 +110,8 @@ export async function prepareOzonStockOrder(orderId: string) {
     orderId: order.id,
     mode: "DRY_RUN" as const,
     formFields,
-    // Ozon collects product price; delivery is handled separately.
-    productAmount: order.total - order.delivery_fee,
+    // Ozon collects the full order total (products + delivery).
+    codAmount: order.total,
     customerTotal: order.total,
     deliveryFee: order.delivery_fee,
   };

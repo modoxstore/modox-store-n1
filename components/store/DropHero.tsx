@@ -68,7 +68,7 @@ export default function DropHero() {
           className="relative mx-auto aspect-square w-full max-w-[400px]"
         >
           <svg viewBox="0 0 200 200" className="h-full w-full">
-            <circle cx="100" cy="100" r="96" fill="rgb(180 139 255 / 0.08)" />
+            <circle cx="100" cy="100" r="96" fill="rgb(255 122 26 / 0.06)" />
             <circle
               cx="100"
               cy="100"

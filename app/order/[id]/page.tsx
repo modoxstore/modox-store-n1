@@ -126,7 +126,7 @@ export default async function OrderTrackingPage({ params }: Props) {
         </div>
 
         {cancelled ? (
-          <div className="mt-8 flex items-start gap-3 border border-red-500/40 bg-red-500/10 p-5 text-red-300">
+          <div className="mt-8 flex items-start gap-3 border border-line bg-map-2 p-5 text-dim">
             <X className="mt-0.5 shrink-0" />
             <p>هاد الطلب تلغى. إلا بغيتي تعاود، دوز طلب جديد من المتجر.</p>
           </div>

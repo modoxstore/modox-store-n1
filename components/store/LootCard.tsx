@@ -77,7 +77,7 @@ export default function LootCard({
 
         <p
           className={`text-[13px] ${
-            soldOut ? "text-red-400" : lowStock ? "text-hazard" : "text-dim"
+            soldOut ? "text-dim" : lowStock ? "text-hazard" : "text-dim"
           }`}
         >
           {soldOut

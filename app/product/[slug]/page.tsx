@@ -133,7 +133,7 @@ export default async function ProductPage({ params }: Props) {
             <p
               className={`mt-5 inline-flex w-fit items-center gap-2 border px-3 py-1.5 text-sm ${
                 soldOut
-                  ? "border-red-500/40 text-red-400"
+                  ? "border-line text-dim"
                   : lowStock
                     ? "border-hazard/40 text-hazard"
                     : "border-zone/40 text-zone"

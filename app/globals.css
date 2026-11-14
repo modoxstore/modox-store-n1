@@ -111,6 +111,36 @@ body {
   from { transform: translateY(14px); opacity: 0.001; }
   to { transform: none; opacity: 1; }
 }
+/* Order placed: items fall in, lid closes, chute opens, drop flies off. */
+@keyframes drop-item-fall {
+  0% { transform: translateY(-160px) rotate(-12deg); opacity: 0; }
+  15% { opacity: 1; }
+  70% { transform: translateY(90px) rotate(6deg); opacity: 1; }
+  100% { transform: translateY(120px) scale(0.6); opacity: 0; }
+}
+@keyframes drop-lid-close {
+  from { transform: rotate(-70deg); }
+  to { transform: rotate(0deg); }
+}
+@keyframes drop-chute-open {
+  from { transform: scaleY(0.1) scaleX(0.3); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes drop-fly {
+  0% { transform: translate(0, 0); }
+  30% { transform: translate(0, 10px); }
+  100% { transform: translate(-120vw, -60vh) rotate(-8deg); }
+}
+@keyframes drop-text-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.drop-item { opacity: 0; animation: drop-item-fall 1.3s cubic-bezier(0.3, 0.1, 0.5, 1) forwards; }
+.drop-lid { transform: rotate(-70deg); animation: drop-lid-close 0.35s ease-in 1.5s forwards; }
+.drop-chute { transform-origin: 50% 100%; opacity: 0; animation: drop-chute-open 0.5s ease-out 1.95s forwards; }
+.drop-flight { animation: drop-fly 2.2s cubic-bezier(0.55, 0, 0.8, 0.3) 2.5s forwards; }
+.drop-text { opacity: 0; animation: drop-text-in 0.5s ease-out 3.2s forwards; }
+
 /* Checkout: the WhatsApp box glows and shakes when it was skipped. */
 @keyframes consent-shake {
   0%, 100% { transform: translateX(0); }
@@ -150,8 +180,17 @@ body {
   .anim-zone,
   .anim-rise,
   .consent-alert,
+  .drop-item,
+  .drop-lid,
+  .drop-chute,
+  .drop-flight,
+  .drop-text,
   .loot-card:hover .loot-scan {
     animation: none !important;
   }
   .anim-ping { display: none; }
+  .drop-item { display: none; }
+  .drop-lid { transform: none; }
+  .drop-chute,
+  .drop-text { opacity: 1; transform: none; }
 }

@@ -29,6 +29,7 @@ type CartContextType = {
   removeFromCart: (name: string) => void;
   openCart: () => void;
   closeCart: () => void;
+  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -112,6 +113,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeFromCart,
         openCart: () => setIsOpen(true),
         closeCart: () => setIsOpen(false),
+        clearCart: () => setItems([]),
       }}
     >
       {children}

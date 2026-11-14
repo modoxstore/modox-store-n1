@@ -12,8 +12,14 @@ import {
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartContext";
+import DropSequence from "@/components/store/DropSequence";
 export default function CheckoutPage() {
-  const { items, totalPrice } = useCart();
+  const { items, totalPrice, clearCart } = useCart();
+  const [placed, setPlaced] = useState<{
+    orderId: string;
+    images: string[];
+    city: string;
+  } | null>(null);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -100,8 +106,13 @@ export default function CheckoutPage() {
         throw new Error(result.error || "تعذر تسجيل الطلب");
       }
 
-      alert("تم تسجيل طلبك بنجاح! رقم الطلب: " + result.orderId);
-      window.location.href = "/shop";
+      // Drop animation, then the order tracking page.
+      setPlaced({
+        orderId: result.orderId,
+        images: items.map((item) => item.image),
+        city: selectedZone?.name ?? "",
+      });
+      clearCart();
     } catch (error) {
       alert(
         error instanceof Error
@@ -112,6 +123,16 @@ export default function CheckoutPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (placed) {
+    return (
+      <DropSequence
+        orderId={placed.orderId}
+        images={placed.images}
+        city={placed.city}
+      />
+    );
+  }
 
   if (items.length === 0) {
     return (

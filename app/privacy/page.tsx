@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Navbar from "@/components/Navbar";
+import StoreHeader from "@/components/store/StoreHeader";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -111,9 +111,9 @@ const sections: { title: string; body: ReactNode }[] = [
 export default function PrivacyPage() {
   return (
     <>
-      <Navbar />
+      <StoreHeader />
 
-      <main dir="rtl" className="min-h-screen bg-[#020504] px-5 pt-36 pb-20 text-white">
+      <main dir="rtl" className="min-h-screen bg-[#020504] px-5 pt-12 pb-20 text-white">
         <article className="mx-auto max-w-3xl">
           <p className="text-sm font-bold text-green-400">MODOX STORE</p>
 

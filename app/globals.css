@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
+/* MODOX STORE — night drop-zone map.
+   One committed dark look: topographic map, loot crates by rarity,
+   signal-flare orange for actions, MODOX green for the safe zone. */
+@theme {
+  --color-map: #0b1719;
+  --color-map-2: #10221f;
+  --color-map-3: #15302c;
+  --color-line: #1e3a37;
+  --color-ink: #e8f0ec;
+  --color-dim: #8fa8a1;
+  --color-flare: #ff7a1a;
+  --color-hazard: #ffd23f;
+  --color-zone: #3ee08f;
+
+  --color-t-common: #9fb0a8;
+  --color-t-rare: #3fb0ff;
+  --color-t-epic: #b48bff;
+  --color-t-legend: #ff7a1a;
+
+  --font-display: var(--font-stencil), "Chakra Petch", Impact, sans-serif;
+  --font-head: var(--font-chakra), var(--font-arabic-display), system-ui, sans-serif;
+  --font-body: var(--font-plex-arabic), "Segoe UI", Tahoma, system-ui, sans-serif;
+  --font-arabic: var(--font-arabic-display), var(--font-plex-arabic), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-map);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-map);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-hazard);
+  outline-offset: 3px;
+}
+
+/* Corner brackets on loot crates, colored by rarity (--tc). */
+.crate-frame {
+  position: relative;
+}
+.crate-frame::before,
+.crate-frame::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--tc, var(--color-t-common));
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 2;
+}
+.crate-frame::before {
+  top: -1px;
+  right: -1px;
+  border-left: 0;
+  border-bottom: 0;
+}
+.crate-frame::after {
+  bottom: -1px;
+  left: -1px;
+  border-right: 0;
+  border-top: 0;
+}
+
+.tier-common { --tc: var(--color-t-common); }
+.tier-rare { --tc: var(--color-t-rare); }
+.tier-epic { --tc: var(--color-t-epic); }
+.tier-legend { --tc: var(--color-t-legend); }
+
+.cut-corners {
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.hazard-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 9px,
+    rgb(255 210 63 / 0.07) 9px 18px
+  );
+}
+
+/* Supply crate falling into the drop zone. */
+@keyframes crate-drop {
+  0% { transform: translateY(-170px) rotate(-7deg); }
+  40% { transform: translateY(-70px) rotate(5deg); }
+  70% { transform: translateY(-4px) rotate(-2deg); }
+  78%, 100% { transform: translateY(0) rotate(0); }
+}
+@keyframes crate-ping {
+  0%, 72% { opacity: 0; transform: scale(0.4); }
+  76% { opacity: 1; }
+  100% { opacity: 0; transform: scale(7); }
+}
+@keyframes zone-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes rise-in {
+  from { transform: translateY(14px); opacity: 0.001; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes scan {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(120%); }
+}
+
+.anim-crate { animation: crate-drop 3.8s cubic-bezier(0.3, 0.1, 0.4, 1) infinite; }
+.anim-ping { animation: crate-ping 3.8s ease-out infinite; }
+.anim-zone { animation: zone-pulse 2.6s ease-in-out infinite; }
+.anim-rise { animation: rise-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+.loot-card .loot-scan {
+  transform: translateX(-120%);
+}
+.loot-card:hover .loot-scan {
+  animation: scan 0.9s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-crate,
+  .anim-ping,
+  .anim-zone,
+  .anim-rise,
+  .loot-card:hover .loot-scan {
+    animation: none !important;
+  }
+  .anim-ping { display: none; }
 }

@@ -143,7 +143,7 @@ export default async function ProductPage({ params }: Props) {
                 ? "نفذت الكمية دابا"
                 : lowStock
                   ? `باقي غير ${product.stock} فالستوك`
-                  : "متوفر فالستوك"}
+                  : `متوفر: ${product.stock} فالستوك`}
             </p>
 
             {product.description && (

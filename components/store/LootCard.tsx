@@ -84,7 +84,7 @@ export default function LootCard({
             ? "نفذت الكمية"
             : lowStock
               ? `باقي غير ${product.stock} فالستوك`
-              : "متوفر"}
+              : `متوفر: ${product.stock} فالستوك`}
         </p>
 
         <AddToCartButton

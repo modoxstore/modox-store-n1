@@ -98,7 +98,7 @@ export default function Footer() {
 
           <div className="mt-6 space-y-4 text-sm text-zinc-400">
             <a
-              href="https://wa.me/212708270909"
+              href="https://wa.me/212708872257"
               target="_blank"
               rel="noreferrer"
               className="block transition hover:text-flare"
@@ -143,7 +143,7 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://wa.me/212708270909"
+              href="https://wa.me/212708872257"
               aria-label="WhatsApp"
               target="_blank"
               rel="noreferrer"

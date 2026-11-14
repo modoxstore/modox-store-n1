@@ -139,13 +139,13 @@ export default function PrivacyPage() {
               <p className="leading-8 text-zinc-300">
                 WhatsApp:{" "}
                 <a
-                  href="https://wa.me/212708270909"
+                  href="https://wa.me/212708872257"
                   target="_blank"
                   rel="noreferrer"
                   dir="ltr"
                   className="font-bold text-flare underline"
                 >
-                  +212 708 270 909
+                  +212 708 872 257
                 </a>
               </p>
             </section>

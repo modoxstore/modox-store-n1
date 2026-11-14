@@ -2,17 +2,28 @@
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { changeOrderStatus } from "../../orderActions";
 
 export const dynamic = "force-dynamic";
 
+const errorLabels: Record<string, string> = {
+  "Order is no longer new": "الطلب ماشي جديد، تبدلات الحالة ديالو من قبل.",
+  "Test order blocked": "طلب تجريبي (TEST / DO NOT SHIP): ما يمكنش يتأكد.",
+  "Order already entered Ozon fulfillment": "الطلب دخل لـ Ozon من قبل.",
+  "WhatsApp already processed this order": "الزبون جاوب على WhatsApp من قبل.",
+};
+
 export default async function OrderDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string; done?: string }>;
 }) {
   await requireAdmin();
 
   const { id } = await params;
+  const { error: actionError, done } = await searchParams;
 
   if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) {
     notFound();
@@ -96,6 +107,46 @@ export default async function OrderDetailPage({
         {testOrder && (
           <div className="mt-5 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4 font-bold text-yellow-300">
             طلب تجريبي محتمل — لا ترسله للشحن
+          </div>
+        )}
+
+        {done && (
+          <div role="status" className="mt-5 rounded-xl border border-green-500/40 bg-green-500/10 p-4 font-bold text-green-300">
+            {done === "confirmed" ? "تم تأكيد الطلب." : "تم إلغاء الطلب ورجع المخزون."}
+          </div>
+        )}
+
+        {actionError && (
+          <div role="alert" className="mt-5 rounded-xl border border-red-500/40 bg-red-500/10 p-4 font-bold text-red-300">
+            {errorLabels[actionError] ?? "ما تبدلاتش الحالة: " + actionError}
+          </div>
+        )}
+
+        {order.status === "new" && (
+          <div className="mt-5 flex flex-wrap gap-3">
+            <form action={changeOrderStatus}>
+              <input type="hidden" name="orderId" value={order.id} />
+              <input type="hidden" name="action" value="confirmed" />
+              <button
+                type="submit"
+                disabled={testOrder}
+                className="rounded-xl bg-green-400 px-6 py-3 font-black text-black hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                تأكيد الطلب
+              </button>
+            </form>
+
+            <form action={changeOrderStatus}>
+              <input type="hidden" name="orderId" value={order.id} />
+              <input type="hidden" name="action" value="cancelled" />
+              <button
+                type="submit"
+                disabled={testOrder}
+                className="rounded-xl border border-red-500/50 px-6 py-3 font-black text-red-300 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                إلغاء الطلب
+              </button>
+            </form>
           </div>
         )}
 
@@ -184,7 +235,7 @@ export default async function OrderDetailPage({
         </div>
 
         <p className="mt-6 text-xs text-zinc-500">
-          عرض المعلومات فقط — لا توجد أي عملية إرسال أو تغيير حالة.
+          التأكيد هنا كيبدل حالة الطلب فقط، وما كيرسلش الشحنة لـ Ozon.
         </p>
       </div>
     </main>

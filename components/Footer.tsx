@@ -120,6 +120,7 @@ export default function Footer() {
           <div className="mt-6 flex gap-3">
             <a
               href="https://www.instagram.com/modoxstore_/"
+              aria-label="Instagram"
               target="_blank"
               rel="noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-pink-500 hover:text-pink-400"
@@ -136,6 +137,7 @@ export default function Footer() {
 
             <a
               href="https://wa.me/212708270909"
+              aria-label="WhatsApp"
               target="_blank"
               rel="noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-2xl border border-green-400/30 bg-green-400/10 text-green-400 transition hover:bg-green-400 hover:text-black"

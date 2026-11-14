@@ -125,11 +125,7 @@ export default function ProductCard({
         <div className="flex items-start justify-between gap-4">
 
           <div>
-            <p className="text-xs font-bold text-zinc-500">
-              متجر هاتف Gaming
-            </p>
-
-            <h3 className="mt-1 text-2xl font-black text-white transition group-hover:text-green-400">
+            <h3 className="text-2xl font-black text-white transition group-hover:text-green-400">
               {name}
             </h3>
           </div>
@@ -206,7 +202,8 @@ export default function ProductCard({
           </div>
         )}
 
-        {/* Rating */}
+        {/* Rating: ghir ila kayn avis 7a9i9iyin */}
+        {reviews > 0 && (
         <div className="mt-3 flex items-center gap-2">
 
           <div
@@ -227,6 +224,7 @@ export default function ProductCard({
           </span>
 
         </div>
+        )}
 
         {/* Stock */}
         <div className="mt-4">

@@ -63,7 +63,7 @@ export default function CartDrawer() {
               </p>
 
               <p className="mt-2 text-sm text-zinc-500">
-                أضف أحد المبردات إلى السلة.
+                أضف أحد المنتجات إلى السلة.
               </p>
             </div>
           ) : (

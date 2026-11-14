@@ -29,16 +29,16 @@ export default async function AnalyticsPage() {
   ];
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[#050807] p-6 text-white">
+    <main dir="rtl" className="min-h-screen bg-map p-6 text-white">
       <div className="mx-auto max-w-6xl">
-        <Link href="/admin" className="text-green-400">← Dashboard</Link>
-        <h1 className="my-8 text-3xl font-black text-green-400">Analytics</h1>
+        <Link href="/admin" className="text-flare">← Dashboard</Link>
+        <h1 className="my-8 text-3xl font-black text-flare">Analytics</h1>
         <div className="grid gap-4 sm:grid-cols-2">
           {stats.map(item => (
             <div key={item.title}
-              className="rounded-2xl border border-green-500/20 bg-[#101713] p-6">
+              className="rounded-2xl border border-flare/20 bg-map-2 p-6">
               <p className="text-zinc-400">{item.title}</p>
-              <h2 className="mt-4 text-3xl font-black text-green-400">
+              <h2 className="mt-4 text-3xl font-black text-flare">
                 {item.value}
               </h2>
             </div>

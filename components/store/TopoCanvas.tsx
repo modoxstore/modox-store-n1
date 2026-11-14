@@ -43,12 +43,12 @@ export default function TopoCanvas({ className = "" }: { className?: string }) {
             else ctx.lineTo(x, y);
           }
           ctx.strokeStyle =
-            i % 5 === 0 ? "rgba(143,168,161,0.22)" : "rgba(143,168,161,0.08)";
+            i % 5 === 0 ? "rgba(155,161,170,0.22)" : "rgba(155,161,170,0.08)";
           ctx.stroke();
         }
       });
 
-      ctx.strokeStyle = "rgba(143,168,161,0.05)";
+      ctx.strokeStyle = "rgba(155,161,170,0.05)";
       for (let x = 0; x < w; x += 80) {
         ctx.beginPath();
         ctx.moveTo(x, 0);

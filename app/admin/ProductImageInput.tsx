@@ -27,7 +27,7 @@ export default function ProductImageInput({
         name="imageFile"
         accept="image/jpeg,image/png,image/webp"
         required={required}
-        className="block w-full rounded-xl border border-white/10 bg-[#080d0a] p-3 text-white"
+        className="block w-full rounded-xl border border-white/10 bg-map p-3 text-white"
         onChange={(event) => {
           const input = event.currentTarget;
           const file = input.files?.[0];
@@ -65,8 +65,8 @@ export default function ProductImageInput({
       )}
 
       {preview && (
-        <div className="mt-4 rounded-2xl border border-green-500/30 bg-black/40 p-4">
-          <p className="mb-3 text-sm font-bold text-green-400">
+        <div className="mt-4 rounded-2xl border border-flare/30 bg-black/40 p-4">
+          <p className="mb-3 text-sm font-bold text-flare">
             معاينة الصورة
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}

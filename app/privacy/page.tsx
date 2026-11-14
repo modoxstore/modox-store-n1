@@ -113,9 +113,9 @@ export default function PrivacyPage() {
     <>
       <StoreHeader />
 
-      <main dir="rtl" className="min-h-screen bg-[#020504] px-5 pt-12 pb-20 text-white">
+      <main dir="rtl" className="min-h-screen bg-map px-5 pt-12 pb-20 text-white">
         <article className="mx-auto max-w-3xl">
-          <p className="text-sm font-bold text-green-400">MODOX STORE</p>
+          <p className="text-sm font-bold text-flare">MODOX STORE</p>
 
           <h1 className="mt-2 text-4xl font-black">سياسة الخصوصية</h1>
 
@@ -127,14 +127,14 @@ export default function PrivacyPage() {
                 key={section.title}
                 className="rounded-2xl border border-white/10 bg-white/[0.02] p-6"
               >
-                <h2 className="mb-3 text-xl font-black text-green-400">
+                <h2 className="mb-3 text-xl font-black text-flare">
                   {section.title}
                 </h2>
                 <div className="leading-8 text-zinc-300">{section.body}</div>
               </section>
             ))}
 
-            <section className="rounded-2xl border border-green-400/20 bg-green-400/[0.05] p-6">
+            <section className="rounded-2xl border border-flare/20 bg-flare/[0.05] p-6">
               <h2 className="mb-3 text-xl font-black">تواصل معانا</h2>
               <p className="leading-8 text-zinc-300">
                 WhatsApp:{" "}
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
                   target="_blank"
                   rel="noreferrer"
                   dir="ltr"
-                  className="font-bold text-green-400 underline"
+                  className="font-bold text-flare underline"
                 >
                   +212 708 270 909
                 </a>

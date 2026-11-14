@@ -2,17 +2,17 @@
 
 /* MODOX STORE — night drop-zone map.
    One committed dark look: topographic map, loot crates by rarity,
-   signal-flare orange for actions, MODOX green for the safe zone. */
+   signal-flare orange for actions and the safe zone. */
 @theme {
-  --color-map: #0b1719;
-  --color-map-2: #10221f;
-  --color-map-3: #15302c;
-  --color-line: #1e3a37;
-  --color-ink: #e8f0ec;
-  --color-dim: #8fa8a1;
+  --color-map: #0c0e11;
+  --color-map-2: #14171c;
+  --color-map-3: #1c2027;
+  --color-line: #2a2f37;
+  --color-ink: #eef0f2;
+  --color-dim: #9ba1aa;
   --color-flare: #ff7a1a;
   --color-hazard: #ffd23f;
-  --color-zone: #3ee08f;
+  --color-zone: #ffb347;
 
   --color-t-common: #9fb0a8;
   --color-t-rare: #3fb0ff;
@@ -111,6 +111,22 @@ body {
   from { transform: translateY(14px); opacity: 0.001; }
   to { transform: none; opacity: 1; }
 }
+/* Checkout: the WhatsApp box glows and shakes when it was skipped. */
+@keyframes consent-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+@keyframes consent-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(255 122 26 / 0.55); }
+  50% { box-shadow: 0 0 0 8px rgb(255 122 26 / 0); }
+}
+.consent-alert {
+  animation: consent-shake 0.45s ease-in-out, consent-glow 1.2s ease-out 3;
+}
+
 @keyframes scan {
   from { transform: translateX(-120%); }
   to { transform: translateX(120%); }
@@ -133,6 +149,7 @@ body {
   .anim-ping,
   .anim-zone,
   .anim-rise,
+  .consent-alert,
   .loot-card:hover .loot-scan {
     animation: none !important;
   }

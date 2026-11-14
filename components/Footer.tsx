@@ -11,10 +11,10 @@ export default function Footer() {
     <footer
       id="contact"
       dir="rtl"
-      className="relative overflow-hidden border-t border-white/10 bg-[#020504] text-white"
+      className="relative overflow-hidden border-t border-white/10 bg-map text-white"
     >
       {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,197,94,0.08),transparent_40%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,122,26,0.08),transparent_40%)]" />
 
       <div className="relative mx-auto grid max-w-[1500px] gap-12 px-6 py-16 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
@@ -25,7 +25,7 @@ export default function Footer() {
               alt="MODOX"
               width={56}
               height={56}
-              className="rounded-2xl border border-green-400/20 bg-black/40 p-2"
+              className="rounded-2xl border border-flare/20 bg-black/40 p-2"
             />
 
             <div>
@@ -33,7 +33,7 @@ export default function Footer() {
                 MODOX
               </h2>
 
-              <p className="text-xs uppercase tracking-[0.25em] text-green-400">
+              <p className="text-xs uppercase tracking-[0.25em] text-flare">
                 Gaming Store
               </p>
             </div>
@@ -55,35 +55,35 @@ export default function Footer() {
           <div className="mt-6 flex flex-col gap-4 text-sm text-zinc-400">
             <Link
               href="/"
-              className="transition hover:text-green-400"
+              className="transition hover:text-flare"
             >
               الرئيسية
             </Link>
 
             <Link
               href="/shop"
-              className="transition hover:text-green-400"
+              className="transition hover:text-flare"
             >
               جميع المنتجات
             </Link>
 
             <Link
               href="/#products"
-              className="transition hover:text-green-400"
+              className="transition hover:text-flare"
             >
               الأكثر مبيعاً
             </Link>
 
             <Link
               href="/#why-modox"
-              className="transition hover:text-green-400"
+              className="transition hover:text-flare"
             >
               لماذا MODOX؟
             </Link>
 
             <Link
               href="/privacy"
-              className="transition hover:text-green-400"
+              className="transition hover:text-flare"
             >
               سياسة الخصوصية
             </Link>
@@ -101,7 +101,7 @@ export default function Footer() {
               href="https://wa.me/212708270909"
               target="_blank"
               rel="noreferrer"
-              className="block transition hover:text-green-400"
+              className="block transition hover:text-flare"
             >
               WhatsApp
             </a>
@@ -147,7 +147,7 @@ export default function Footer() {
               aria-label="WhatsApp"
               target="_blank"
               rel="noreferrer"
-              className="flex h-12 w-12 items-center justify-center rounded-2xl border border-green-400/30 bg-green-400/10 text-green-400 transition hover:bg-green-400 hover:text-black"
+              className="flex h-12 w-12 items-center justify-center rounded-2xl border border-flare/30 bg-flare/10 text-flare transition hover:bg-[#ff9445] hover:text-black"
             >
               <MessageCircle size={20} />
             </a>

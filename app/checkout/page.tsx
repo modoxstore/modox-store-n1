@@ -49,8 +49,10 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const checkoutKeyRef = useRef<string | null>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
 
 
   const sendOrder = async (
@@ -59,6 +61,15 @@ export default function CheckoutPage() {
     event.preventDefault();
 
     if (isSubmitting || items.length === 0) return;
+
+    // Every order is confirmed on WhatsApp, so the box must be ticked.
+    if (!whatsappConsent) {
+      setConsentError(false);
+      requestAnimationFrame(() => setConsentError(true));
+      consentRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      consentRef.current?.focus({ preventScroll: true });
+      return;
+    }
 
     if (!checkoutKeyRef.current) {
       checkoutKeyRef.current = crypto.randomUUID();
@@ -106,7 +117,7 @@ export default function CheckoutPage() {
     return (
       <main
         dir="rtl"
-        className="flex min-h-screen items-center justify-center bg-[#020504] px-5 text-white"
+        className="flex min-h-screen items-center justify-center bg-map px-5 text-white"
       >
         <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-white/[0.02] p-10 text-center">
           <ShoppingBag
@@ -124,7 +135,7 @@ export default function CheckoutPage() {
 
           <Link
             href="/#products"
-            className="mt-7 inline-block rounded-xl bg-green-400 px-8 py-4 font-black text-black transition hover:bg-green-300"
+            className="mt-7 inline-block rounded-xl bg-flare px-8 py-4 font-black text-black transition hover:bg-[#ff9445]"
           >
             عرض المنتجات
           </Link>
@@ -136,19 +147,19 @@ export default function CheckoutPage() {
   return (
     <main
       dir="rtl"
-      className="min-h-screen bg-[#020504] px-5 py-10 text-white"
+      className="min-h-screen bg-map px-5 py-10 text-white"
     >
       <div className="mx-auto max-w-[1250px]">
         <Link
           href="/"
-          className="mb-8 inline-flex items-center gap-2 text-zinc-400 transition hover:text-green-400"
+          className="mb-8 inline-flex items-center gap-2 text-zinc-400 transition hover:text-flare"
         >
           <ArrowRight size={19} />
           الرجوع للمتجر
         </Link>
 
         <div className="mb-10">
-          <p className="text-sm font-bold text-green-400">
+          <p className="text-sm font-bold text-flare">
             MODOX STORE
           </p>
 
@@ -167,7 +178,7 @@ export default function CheckoutPage() {
             className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 md:p-8"
           >
             <div className="mb-7 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-400/10 text-green-400">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-flare/10 text-flare">
                 <User size={22} />
               </div>
 
@@ -202,7 +213,7 @@ export default function CheckoutPage() {
                       setFullName(event.target.value)
                     }
                     placeholder="مثال: محمد العلوي"
-                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-green-400"
+                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-flare"
                   />
                 </div>
               </label>
@@ -226,7 +237,7 @@ export default function CheckoutPage() {
                       setPhone(event.target.value)
                     }
                     placeholder="06XXXXXXXX"
-                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-green-400"
+                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-flare"
                   />
                 </div>
               </label>
@@ -249,7 +260,7 @@ export default function CheckoutPage() {
                     }}
                     onFocus={() => setShowCities(true)}
                     placeholder="قلب على المدينة أو المنطقة..."
-                    className="w-full rounded-xl border border-white/10 bg-[#111] p-4 text-white outline-none focus:border-green-400"
+                    className="w-full rounded-xl border border-white/10 bg-[#111] p-4 text-white outline-none focus:border-flare"
                   />
 
                   {showCities && (
@@ -270,10 +281,10 @@ export default function CheckoutPage() {
                               setCitySearch(zone.name);
                               setShowCities(false);
                             }}
-                            className="flex w-full justify-between border-b border-white/5 px-4 py-3 text-right hover:bg-green-400/10"
+                            className="flex w-full justify-between border-b border-white/5 px-4 py-3 text-right hover:bg-flare/10"
                           >
                             <span>{zone.name}</span>
-                            <span className="text-green-400">
+                            <span className="text-flare">
                               {zone.delivered_price} DH
                             </span>
                           </button>
@@ -307,7 +318,7 @@ export default function CheckoutPage() {
                       setAddress(event.target.value)
                     }
                     placeholder="الحي، الزنقة، رقم الدار..."
-                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-green-400"
+                    className="w-full rounded-xl border border-white/10 bg-black/50 py-4 pl-4 pr-12 text-white outline-none transition placeholder:text-zinc-700 focus:border-flare"
                   />
                 </div>
               </label>
@@ -325,15 +336,15 @@ export default function CheckoutPage() {
                 }
                 placeholder="مثال: عيط ليا قبل التوصيل..."
                 rows={4}
-                className="w-full resize-none rounded-xl border border-white/10 bg-black/50 p-4 text-white outline-none transition placeholder:text-zinc-700 focus:border-green-400"
+                className="w-full resize-none rounded-xl border border-white/10 bg-black/50 p-4 text-white outline-none transition placeholder:text-zinc-700 focus:border-flare"
               />
             </label>
 
-            <div className="mt-6 rounded-2xl border border-green-400/20 bg-green-400/[0.05] p-4">
+            <div className="mt-6 rounded-2xl border border-flare/20 bg-flare/[0.05] p-4">
               <div className="flex items-start gap-3">
                 <CheckCircle2
                   size={22}
-                  className="mt-0.5 shrink-0 text-green-400"
+                  className="mt-0.5 shrink-0 text-flare"
                 />
 
                 <div>
@@ -350,27 +361,46 @@ export default function CheckoutPage() {
 
             <label
               htmlFor="whatsapp-consent"
-              className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-black/30 p-4"
+              className={`mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition ${
+                consentError && !whatsappConsent
+                  ? "consent-alert border-flare bg-flare/10"
+                  : whatsappConsent
+                    ? "border-flare/50 bg-flare/5"
+                    : "border-white/10 bg-black/30"
+              }`}
             >
               <input
+                ref={consentRef}
                 id="whatsapp-consent"
                 type="checkbox"
+                aria-required="true"
+                aria-describedby="whatsapp-consent-help"
                 checked={whatsappConsent}
-                onChange={(event) =>
-                  setWhatsappConsent(event.target.checked)
-                }
-                className="mt-1 h-4 w-4 shrink-0 accent-green-400"
+                onChange={(event) => {
+                  setWhatsappConsent(event.target.checked);
+                  if (event.target.checked) setConsentError(false);
+                }}
+                className="mt-1 h-5 w-5 shrink-0 accent-[#ff7a1a]"
               />
 
-              <span className="text-sm leading-6 text-zinc-400">
+              <span className="text-sm leading-6 text-zinc-300">
                 موافق نتوصل برسالة WhatsApp من MODOX STORE فيها تفاصيل الطلب ديالي باش نأكدو ولا نلغيه.
+                <span className="text-flare"> (ضروري)</span>
+                <span
+                  id="whatsapp-consent-help"
+                  className={`mt-1 block font-bold text-flare ${
+                    consentError && !whatsappConsent ? "" : "hidden"
+                  }`}
+                >
+                  كوشي هنا باش يدوز الطلب: التأكيد كيكون غير فـ WhatsApp.
+                </span>
               </span>
             </label>
 
             <button
               type="submit"
               disabled={isSubmitting || !selectedZone}
-              className="mt-7 w-full rounded-xl bg-green-400 px-6 py-4 text-lg font-black text-black transition hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-7 w-full rounded-xl bg-flare px-6 py-4 text-lg font-black text-black transition hover:bg-[#ff9445] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting
                 ? "جاري تسجيل الطلب..."
@@ -380,7 +410,7 @@ export default function CheckoutPage() {
 
           <aside className="h-fit rounded-3xl border border-white/10 bg-white/[0.02] p-5 md:p-6">
             <div className="mb-6 flex items-center gap-3">
-              <ShoppingBag className="text-green-400" />
+              <ShoppingBag className="text-flare" />
 
               <h2 className="text-xl font-black">
                 ملخص الطلب
@@ -413,7 +443,7 @@ export default function CheckoutPage() {
                       </p>
                     </div>
 
-                    <p className="font-black text-green-400">
+                    <p className="font-black text-flare">
                       {item.price * item.quantity} DH
                     </p>
                   </div>
@@ -439,7 +469,7 @@ export default function CheckoutPage() {
                   المجموع
                 </span>
 
-                <span className="text-3xl font-black text-green-400">
+                <span className="text-3xl font-black text-flare">
                   {totalPrice + (selectedZone?.delivered_price ?? 0)} DH
                 </span>
               </div>

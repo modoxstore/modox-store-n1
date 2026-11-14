@@ -87,16 +87,16 @@ export default async function OrderDetailPage({
     order.customer_name?.toUpperCase().includes("TEST") ||
     order.address?.toUpperCase().includes("DO NOT SHIP");
 
-  const card = "rounded-2xl border border-white/10 bg-[#101713] p-5";
+  const card = "rounded-2xl border border-white/10 bg-map-2 p-5";
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[#050807] p-5 text-white md:p-8">
+    <main dir="rtl" className="min-h-screen bg-map p-5 text-white md:p-8">
       <div className="mx-auto max-w-5xl">
-        <Link href="/admin/orders" className="text-green-400">
+        <Link href="/admin/orders" className="text-flare">
           ← الرجوع للطلبات
         </Link>
 
-        <h1 className="mt-6 text-3xl font-black text-green-400">
+        <h1 className="mt-6 text-3xl font-black text-flare">
           تفاصيل الطلب
         </h1>
 
@@ -111,7 +111,7 @@ export default async function OrderDetailPage({
         )}
 
         {done && (
-          <div role="status" className="mt-5 rounded-xl border border-green-500/40 bg-green-500/10 p-4 font-bold text-green-300">
+          <div role="status" className="mt-5 rounded-xl border border-flare/40 bg-flare/10 p-4 font-bold text-flare">
             {done === "confirmed" ? "تم تأكيد الطلب." : "تم إلغاء الطلب ورجع المخزون."}
           </div>
         )}
@@ -121,7 +121,7 @@ export default async function OrderDetailPage({
             role="status"
             className={`mt-3 rounded-xl border p-4 font-bold ${
               ozonSendStatus === "created"
-                ? "border-green-500/40 bg-green-500/10 text-green-300"
+                ? "border-flare/40 bg-flare/10 text-flare"
                 : "border-orange-500/40 bg-orange-500/10 text-orange-300"
             }`}
           >
@@ -149,7 +149,7 @@ export default async function OrderDetailPage({
               <button
                 type="submit"
                 disabled={testOrder}
-                className="rounded-xl bg-green-400 px-6 py-3 font-black text-black hover:bg-green-300 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl bg-flare px-6 py-3 font-black text-black hover:bg-[#ff9445] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 تأكيد الطلب
               </button>
@@ -189,7 +189,7 @@ export default async function OrderDetailPage({
           <section className={card}>
             <h2 className="mb-4 text-xl font-bold">المبلغ</h2>
             <p className="text-sm text-zinc-400">المجموع شامل التوصيل</p>
-            <p className="mt-2 text-4xl font-black text-green-400">
+            <p className="mt-2 text-4xl font-black text-flare">
               {order.total} DH
             </p>
             <p className="mt-4 text-sm">
@@ -221,7 +221,7 @@ export default async function OrderDetailPage({
                       الكمية: {item.quantity}
                     </p>
                   </div>
-                  <p className="font-bold text-green-400">
+                  <p className="font-bold text-flare">
                     {item.price} DH × {item.quantity}
                   </p>
                 </div>
@@ -255,7 +255,7 @@ export default async function OrderDetailPage({
                 <input type="hidden" name="orderId" value={order.id} />
                 <button
                   type="submit"
-                  className="rounded-xl bg-green-400 px-5 py-2 font-black text-black hover:bg-green-300"
+                  className="rounded-xl bg-flare px-5 py-2 font-black text-black hover:bg-[#ff9445]"
                 >
                   عاود صيفط لـ Ozon
                 </button>

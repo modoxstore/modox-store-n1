@@ -34,13 +34,13 @@ export default function CartDrawer() {
 
       <aside
         dir="rtl"
-        className={`fixed right-0 top-0 z-[100] flex h-full w-full max-w-md flex-col border-l border-green-500/20 bg-[#030706] shadow-2xl transition-transform duration-300 ${
+        className={`fixed right-0 top-0 z-[100] flex h-full w-full max-w-md flex-col border-l border-flare/20 bg-map shadow-2xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between border-b border-white/10 p-5">
           <div className="flex items-center gap-3">
-            <ShoppingBag className="text-green-400" />
+            <ShoppingBag className="text-flare" />
             <h2 className="text-xl font-black text-white">سلة المشتريات</h2>
           </div>
 
@@ -89,7 +89,7 @@ export default function CartDrawer() {
                           {item.name}
                         </h3>
 
-                        <p className="mt-1 font-black text-green-400">
+                        <p className="mt-1 font-black text-flare">
                           {item.price} DH
                         </p>
                       </div>
@@ -107,7 +107,7 @@ export default function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => decreaseQuantity(item.name)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white transition hover:border-green-400"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white transition hover:border-flare"
                       >
                         <Minus size={15} />
                       </button>
@@ -119,7 +119,7 @@ export default function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => increaseQuantity(item.name)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white transition hover:border-green-400"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white transition hover:border-flare"
                       >
                         <Plus size={15} />
                       </button>
@@ -135,7 +135,7 @@ export default function CartDrawer() {
           <div className="mb-5 flex items-center justify-between">
             <span className="text-zinc-400">المجموع</span>
 
-            <span className="text-2xl font-black text-green-400">
+            <span className="text-2xl font-black text-flare">
               {totalPrice} DH
             </span>
           </div>
@@ -146,7 +146,7 @@ export default function CartDrawer() {
   className={`block w-full rounded-xl px-5 py-4 text-center font-black transition ${
     items.length === 0
       ? "pointer-events-none bg-zinc-800 text-zinc-500"
-      : "bg-green-400 text-black hover:bg-green-300"
+      : "bg-flare text-black hover:bg-[#ff9445]"
   }`}
 >
   إتمام الطلب

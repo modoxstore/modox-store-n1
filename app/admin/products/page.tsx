@@ -33,13 +33,13 @@ export default async function AdminProductsPage() {
   const active = products.filter(p => p.active).length;
 
   const input =
-    "w-full rounded-xl border border-white/10 bg-[#080d0a] p-3 text-white outline-none focus:border-green-400";
+    "w-full rounded-xl border border-white/10 bg-map p-3 text-white outline-none focus:border-flare";
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[#050807] p-5 text-white md:p-8">
+    <main dir="rtl" className="min-h-screen bg-map p-5 text-white md:p-8">
       <div className="mx-auto max-w-6xl">
-        <header className="mb-8 border-b border-green-500/20 pb-6">
-          <h1 className="text-3xl font-black text-green-400">
+        <header className="mb-8 border-b border-flare/20 pb-6">
+          <h1 className="text-3xl font-black text-flare">
             MODOX ADMIN V2
           </h1>
           <p className="mt-2 text-zinc-400">
@@ -47,14 +47,14 @@ export default async function AdminProductsPage() {
           </p>
         </header>
 
-        <div className="mb-5"><a href="/admin" className="text-green-400">← Dashboard</a></div>
+        <div className="mb-5"><a href="/admin" className="text-flare">← Dashboard</a></div>
         <div className="mb-8 grid gap-4 md:grid-cols-2">
           <a
             href="#products-management"
-            className="flex items-center justify-between rounded-2xl border border-green-500/30 bg-[#101713] p-6 transition hover:bg-green-500/10"
+            className="flex items-center justify-between rounded-2xl border border-flare/30 bg-map-2 p-6 transition hover:bg-flare/10"
           >
             <div>
-              <h2 className="text-xl font-black text-green-400">
+              <h2 className="text-xl font-black text-flare">
                 Gestion des Produits
               </h2>
               <p className="mt-2 text-sm text-zinc-400">
@@ -66,10 +66,10 @@ export default async function AdminProductsPage() {
 
           <a
             href="/admin/orders"
-            className="flex items-center justify-between rounded-2xl border border-green-500/30 bg-[#101713] p-6 transition hover:bg-green-500/10"
+            className="flex items-center justify-between rounded-2xl border border-flare/30 bg-map-2 p-6 transition hover:bg-flare/10"
           >
             <div>
-              <h2 className="text-xl font-black text-green-400">
+              <h2 className="text-xl font-black text-flare">
                 Gestion des Commandes
               </h2>
               <p className="mt-2 text-sm text-zinc-400">
@@ -86,17 +86,17 @@ export default async function AdminProductsPage() {
             { title: "منتجات ظاهرة", value: active },
           ].map(card => (
             <div key={card.title}
-              className="rounded-2xl border border-green-500/20 bg-[#101713] p-5">
+              className="rounded-2xl border border-flare/20 bg-map-2 p-5">
               <p className="text-zinc-400">{card.title}</p>
-              <p className="mt-3 text-3xl font-black text-green-400">
+              <p className="mt-3 text-3xl font-black text-flare">
                 {card.value}
               </p>
             </div>
           ))}
         </div>
 
-        <section id="products-management" className="mb-8 rounded-2xl border border-green-500/20 bg-[#101713] p-6">
-          <h2 className="mb-2 text-xl font-black text-green-400">
+        <section id="products-management" className="mb-8 rounded-2xl border border-flare/20 bg-map-2 p-6">
+          <h2 className="mb-2 text-xl font-black text-flare">
             + إضافة منتج جديد
           </h2>
           <p className="mb-5 text-sm text-zinc-400">
@@ -111,7 +111,7 @@ export default async function AdminProductsPage() {
             <input name="ozon_ref" placeholder="Ozon Reference (اختياري)" className={input}/>
             <input name="description" placeholder="الوصف" className={input}/>
             <button type="submit"
-              className="rounded-xl bg-green-400 p-3 font-black text-black md:col-span-2">
+              className="rounded-xl bg-flare p-3 font-black text-black md:col-span-2">
               حفظ المنتج
             </button>
           </form>
@@ -124,7 +124,7 @@ export default async function AdminProductsPage() {
           <div className="grid gap-5 lg:grid-cols-2">
             {products.map(product => (
               <article key={product.id}
-                className="rounded-2xl border border-white/10 bg-[#101713] p-5">
+                className="rounded-2xl border border-white/10 bg-map-2 p-5">
                 <div className="mb-4 flex items-center gap-3">
                   {product.image ? (
                     // Admin previews configured image paths
@@ -137,7 +137,7 @@ export default async function AdminProductsPage() {
                   )}
                   <div>
                     <h3 className="font-bold">{product.name}</h3>
-                    <p className="text-sm text-green-400">
+                    <p className="text-sm text-flare">
                       {product.price} DH · Stock: {product.stock}
                     </p>
                     <p className="text-xs text-zinc-400">
@@ -149,15 +149,15 @@ export default async function AdminProductsPage() {
                 <form
                   action={uploadProductImage}
                   encType="multipart/form-data"
-                  className="mb-4 rounded-xl border border-green-500/20 p-4"
+                  className="mb-4 rounded-xl border border-flare/20 p-4"
                 >
                   <input type="hidden" name="id" value={product.id}/>
-                  <label className="mb-2 block text-sm font-bold text-green-400">
+                  <label className="mb-2 block text-sm font-bold text-flare">
                     رفع صورة المنتج</label>
                   <ProductImageInput required />
                   <button
                     type="submit"
-                    className="w-full rounded-xl bg-green-400 p-3 font-bold text-black"
+                    className="w-full rounded-xl bg-flare p-3 font-bold text-black"
                   >
                     رفع الصورة وحفظها
                   </button>
@@ -197,19 +197,19 @@ export default async function AdminProductsPage() {
                       rows={2} className={input}/>
                   </label>
                   <button type="submit"
-                    className="rounded-xl bg-green-400 p-3 font-bold text-black sm:col-span-2">
+                    className="rounded-xl bg-flare p-3 font-bold text-black sm:col-span-2">
                     حفظ التعديلات
                   </button>
                 </form>
 
-                <form action={savePromotion} className="mt-4 grid gap-3 rounded-xl border border-green-500/20 p-4 sm:grid-cols-2">
-                  <h4 className="font-bold text-green-400 sm:col-span-2">العروض والتخفيضات</h4>
+                <form action={savePromotion} className="mt-4 grid gap-3 rounded-xl border border-flare/20 p-4 sm:grid-cols-2">
+                  <h4 className="font-bold text-flare sm:col-span-2">العروض والتخفيضات</h4>
                   <input type="hidden" name="id" value={product.id} />
                   <label className="text-sm">ثمن البيع<input type="number" name="price" min="0" required defaultValue={product.price} className={input}/></label>
                   <label className="text-sm">الثمن المشطوب<input type="number" name="old_price" min="0" defaultValue={product.old_price ?? ""} className={input}/></label>
                   <label className="text-sm sm:col-span-2">نهاية العرض<input type="datetime-local" name="promo_end" defaultValue={product.promo_end ? new Date(new Date(product.promo_end).getTime() - new Date(product.promo_end).getTimezoneOffset()*60000).toISOString().slice(0,16) : ""} className={input}/></label>
                   <p className="text-xs text-zinc-400 sm:col-span-2">لحذف العرض فرغ الثمن المشطوب وتاريخ النهاية. ثمن البيع هو السعر المعتمد في Checkout.</p>
-                  <button type="submit" className="rounded-xl bg-green-400 p-3 font-bold text-black sm:col-span-2">حفظ العرض</button>
+                  <button type="submit" className="rounded-xl bg-flare p-3 font-bold text-black sm:col-span-2">حفظ العرض</button>
                 </form>
                 <form action={toggleAdminProduct} className="mt-3">
                   <input type="hidden" name="id" value={product.id}/>

@@ -8,9 +8,9 @@ export default async function AdminLogin({
   const params = await searchParams;
 
   return (
-    <main dir="rtl" className="flex min-h-screen items-center justify-center bg-[#050807] p-5 text-white">
-      <div className="w-full max-w-md rounded-3xl border border-green-500/20 bg-[#101713] p-8">
-        <h1 className="text-center text-3xl font-black text-green-400">
+    <main dir="rtl" className="flex min-h-screen items-center justify-center bg-map p-5 text-white">
+      <div className="w-full max-w-md rounded-3xl border border-flare/20 bg-map-2 p-8">
+        <h1 className="text-center text-3xl font-black text-flare">
           MODOX ADMIN
         </h1>
         <p className="mt-3 text-center text-zinc-400">
@@ -34,7 +34,7 @@ export default async function AdminLogin({
               type="email"
               required
               autoComplete="username"
-              className="w-full rounded-xl border border-white/10 bg-black p-4 outline-none focus:border-green-400"
+              className="w-full rounded-xl border border-white/10 bg-black p-4 outline-none focus:border-flare"
             />
           </div>
 
@@ -48,13 +48,13 @@ export default async function AdminLogin({
               type="password"
               required
               autoComplete="current-password"
-              className="w-full rounded-xl border border-white/10 bg-black p-4 outline-none focus:border-green-400"
+              className="w-full rounded-xl border border-white/10 bg-black p-4 outline-none focus:border-flare"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-green-400 p-4 font-black text-black hover:bg-green-300"
+            className="w-full rounded-xl bg-flare p-4 font-black text-black hover:bg-[#ff9445]"
           >
             دخول Admin
           </button>

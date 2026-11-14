@@ -19,10 +19,10 @@ export default async function StockPage() {
   const lowStock = products.filter(p => p.stock > 0 && p.stock <= 5);
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[#050807] p-6 text-white">
+    <main dir="rtl" className="min-h-screen bg-map p-6 text-white">
       <div className="mx-auto max-w-6xl">
-        <Link href="/admin" className="text-green-400">← Dashboard</Link>
-        <h1 className="my-8 text-3xl font-black text-green-400">
+        <Link href="/admin" className="text-flare">← Dashboard</Link>
+        <h1 className="my-8 text-3xl font-black text-flare">
           Gestion de Stock
         </h1>
 
@@ -33,16 +33,16 @@ export default async function StockPage() {
             ["نفاد المخزون", outOfStock.length],
           ].map(([label,value]) => (
             <div key={String(label)}
-              className="rounded-2xl border border-green-500/20 bg-[#101713] p-5">
+              className="rounded-2xl border border-flare/20 bg-map-2 p-5">
               <p className="text-zinc-400">{label}</p>
-              <h2 className="mt-3 text-3xl font-black text-green-400">{value}</h2>
+              <h2 className="mt-3 text-3xl font-black text-flare">{value}</h2>
             </div>
           ))}
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#101713]">
+        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-map-2">
           <table className="w-full min-w-[650px] text-right">
-            <thead className="border-b border-white/10 text-green-400">
+            <thead className="border-b border-white/10 text-flare">
               <tr>
                 {["المنتج","الكمية","الحالة","مرجع Ozon","الظهور"].map(title => (
                   <th key={title} className="p-4">{title}</th>

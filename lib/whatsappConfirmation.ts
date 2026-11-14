@@ -34,7 +34,10 @@ export async function processWhatsAppConfirmation(
     const { data: sent, error: lookupError } = await supabaseAdmin
       .from("whatsapp_order_confirmations")
       .select("order_id,phone")
-      .eq("message_id", input.messageId)
+      // The reply can answer the first message or the 12h reminder.
+      .or(
+        `message_id.eq."${input.messageId}",reminder_message_id.eq."${input.messageId}"`
+      )
       .maybeSingle();
 
     if (lookupError) {

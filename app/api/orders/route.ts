@@ -46,8 +46,15 @@ export async function POST(request: NextRequest) {
 
     const body = JSON.parse(raw);
     const { checkoutKey, customerName, phone, cityId, address, items } = body;
-    // Only message customers who ticked the WhatsApp consent box.
+    // Every order is confirmed on WhatsApp: no consent, no order.
     const whatsappConsent = body.whatsappConsent === true;
+
+    if (!whatsappConsent) {
+      return NextResponse.json(
+        { error: "خاصك توافق على رسالة WhatsApp باش يدوز الطلب." },
+        { status: 400 }
+      );
+    }
 
     if (
       typeof checkoutKey !== "string" ||

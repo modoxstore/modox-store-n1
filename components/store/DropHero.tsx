@@ -25,7 +25,7 @@ export default function DropHero() {
 
           <h1 className="font-arabic text-[44px] leading-[1.05] text-ink sm:text-[64px] lg:text-[78px]">
             نزل فالماب،
-            <span className="block text-flare">العتاد كيوصلك لباب الدار.</span>
+            <span className="block text-flare">اللوت كيوصلك لباب الدار.</span>
           </h1>
 
           <p className="mt-6 max-w-[46ch] text-[17px] leading-8 text-dim">
@@ -74,7 +74,7 @@ export default function DropHero() {
               cy="100"
               r="96"
               fill="none"
-              stroke="#8fa8a1"
+              stroke="#9ba1aa"
               strokeOpacity="0.5"
               strokeDasharray="3 6"
             />
@@ -83,12 +83,12 @@ export default function DropHero() {
               cx="100"
               cy="100"
               r="58"
-              fill="rgb(62 224 143 / 0.07)"
-              stroke="#3ee08f"
+              fill="rgb(255 179 71 / 0.07)"
+              stroke="#ffb347"
               strokeWidth="2"
             />
-            <line x1="100" y1="0" x2="100" y2="200" stroke="#1e3a37" />
-            <line x1="0" y1="100" x2="200" y2="100" stroke="#1e3a37" />
+            <line x1="100" y1="0" x2="100" y2="200" stroke="#2a2f37" />
+            <line x1="0" y1="100" x2="200" y2="100" stroke="#2a2f37" />
           </svg>
 
           <span className="anim-ping absolute left-1/2 top-1/2 -ml-[10px] -mt-[10px] h-5 w-5 rounded-full border-2 border-flare" />
@@ -103,7 +103,7 @@ export default function DropHero() {
                 strokeWidth="1.5"
                 opacity="0.4"
               />
-              <g stroke="#8fa8a1" strokeWidth="1">
+              <g stroke="#9ba1aa" strokeWidth="1">
                 <line x1="8" y1="30" x2="26" y2="62" />
                 <line x1="76" y1="30" x2="58" y2="62" />
                 <line x1="42" y1="30" x2="42" y2="62" />

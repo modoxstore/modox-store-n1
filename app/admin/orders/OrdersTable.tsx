@@ -62,7 +62,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
 
   return (
     <>
-      <div className="mb-6 rounded-2xl border border-green-500/20 bg-[#101713] p-5">
+      <div className="mb-6 rounded-2xl border border-flare/20 bg-map-2 p-5">
         <input
           value={query}
           onChange={event => {
@@ -70,7 +70,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
             setPage(1);
           }}
           placeholder="بحث بالاسم، الهاتف، المدينة أو رقم الطلب..."
-          className="w-full rounded-xl border border-white/10 bg-[#080d0a] p-4 text-white outline-none focus:border-green-400"
+          className="w-full rounded-xl border border-white/10 bg-map p-4 text-white outline-none focus:border-flare"
         />
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -84,8 +84,8 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
               }}
               className={`rounded-xl px-4 py-2 text-sm font-bold transition ${
                 status === item.value
-                  ? "bg-green-400 text-black"
-                  : "border border-white/10 bg-black/30 text-zinc-300 hover:border-green-400/40"
+                  ? "bg-flare text-black"
+                  : "border border-white/10 bg-black/30 text-zinc-300 hover:border-flare/40"
               }`}
             >
               {item.label} ({counts[item.value]})
@@ -98,9 +98,9 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#101713]">
+      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-map-2">
         <table className="w-full min-w-[1000px] text-right text-sm">
-          <thead className="border-b border-white/10 text-green-400">
+          <thead className="border-b border-white/10 text-flare">
             <tr>
               {["التاريخ","الزبون","الهاتف","المدينة","العنوان","المبلغ","التوصيل","الحالة"].map(h => (
                 <th key={h} className="p-4">{h}</th>
@@ -118,7 +118,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                 <td className="p-4 font-bold">
                   <Link
                     href={`/admin/orders/${order.id}`}
-                    className="text-green-400 hover:underline"
+                    className="text-flare hover:underline"
                   >
                     {order.customer_name || "—"}
                   </Link>
@@ -126,12 +126,12 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                 <td className="p-4" dir="ltr">{order.phone || "—"}</td>
                 <td className="p-4">{order.city || "—"}</td>
                 <td className="max-w-xs p-4">{order.address || "—"}</td>
-                <td className="p-4 font-bold text-green-400">{order.total} DH</td>
+                <td className="p-4 font-bold text-flare">{order.total} DH</td>
                 <td className="p-4">{order.delivery_fee ?? 0} DH</td>
                 <td className="p-4">
                   <span className={`rounded-full px-3 py-1 ${
                     order.status === "confirmed"
-                      ? "bg-green-500/10 text-green-400"
+                      ? "bg-flare/10 text-flare"
                       : order.status === "cancelled"
                         ? "bg-red-500/10 text-red-400"
                         : "bg-yellow-500/10 text-yellow-300"
@@ -152,7 +152,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
         </table>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#101713] p-4">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-map-2 p-4">
         <p className="text-sm text-zinc-400">
           الصفحة {currentPage} من {totalPages}
         </p>
@@ -162,7 +162,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
             type="button"
             disabled={currentPage <= 1}
             onClick={() => setPage(currentPage - 1)}
-            className="rounded-xl border border-green-500/30 px-5 py-2 text-green-400 disabled:opacity-30"
+            className="rounded-xl border border-flare/30 px-5 py-2 text-flare disabled:opacity-30"
           >
             السابقة
           </button>
@@ -171,7 +171,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
             type="button"
             disabled={currentPage >= totalPages}
             onClick={() => setPage(currentPage + 1)}
-            className="rounded-xl bg-green-400 px-5 py-2 font-bold text-black disabled:opacity-30"
+            className="rounded-xl bg-flare px-5 py-2 font-bold text-black disabled:opacity-30"
           >
             التالية
           </button>

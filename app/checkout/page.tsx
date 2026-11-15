@@ -59,6 +59,13 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const checkoutKeyRef = useRef<string | null>(null);
   const consentRef = useRef<HTMLInputElement>(null);
+  // Anti-spam: hidden field bots fill in, and when the form was opened.
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const openedAtRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    openedAtRef.current = Date.now();
+  }, []);
 
 
   const sendOrder = async (
@@ -93,6 +100,8 @@ export default function CheckoutPage() {
           cityId: Number(cityId),
           address: address.trim(),
           whatsappConsent,
+          website: honeypotRef.current?.value ?? "",
+          fillMs: openedAtRef.current ? Date.now() - openedAtRef.current : 0,
           items: items.map((item) => ({
             name: item.name,
             quantity: item.quantity,
@@ -198,6 +207,20 @@ export default function CheckoutPage() {
             onSubmit={sendOrder}
             className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 md:p-8"
           >
+            {/* Honeypot: hidden from people, filled in by bots. */}
+            <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+              <label htmlFor="website">Website</label>
+              <input
+                ref={honeypotRef}
+                id="website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                defaultValue=""
+              />
+            </div>
+
             <div className="mb-7 flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-flare/10 text-flare">
                 <User size={22} />

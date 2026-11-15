@@ -1,5 +1,6 @@
 import { sendAndSaveConfirmation } from "@/lib/whatsappSendAndSave";
 import { getTestRecipients, isRecipientAllowed } from "@/lib/whatsapp";
+import { checkOrderForSpam } from "@/lib/antiSpam";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -94,6 +95,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Invalid Moroccan phone" }, { status: 400 }
       );
+    }
+
+    const spam = checkOrderForSpam({
+      honeypot: body.website,
+      fillMs: body.fillMs,
+      customerName,
+      address,
+      normalizedPhone,
+    });
+
+    if (!spam.ok) {
+      console.warn("Checkout blocked as spam:", spam.reason);
+      return NextResponse.json({ error: spam.message }, { status: 400 });
     }
 
 

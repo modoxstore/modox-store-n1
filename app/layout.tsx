@@ -77,6 +77,12 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Lalezar&family=Saira+Stencil+One&display=swap"
         />
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4947064544666047"
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
         <CartProvider>

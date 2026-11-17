@@ -87,3 +87,28 @@ export async function retryOzon(formData: FormData) {
   revalidatePath(`/admin/orders/${orderId}`);
   redirect(`/admin/orders/${orderId}?ozon=${ozon}`);
 }
+
+// The customer received and paid a confirmed order. Gives 1 XP per DH of
+// products to the phone number (once per order, enforced in the database).
+export async function markDelivered(formData: FormData) {
+  await requireAdmin();
+
+  const orderId = String(formData.get("orderId") ?? "");
+
+  if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(orderId)) {
+    redirect("/admin/orders");
+  }
+
+  const { data, error } = await supabaseAdmin.rpc("admin_mark_order_delivered", {
+    p_order_id: orderId,
+  });
+
+  revalidatePath(`/admin/orders/${orderId}`);
+
+  if (error) {
+    console.error("Mark delivered failed:", error.message);
+    redirect(`/admin/orders/${orderId}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect(`/admin/orders/${orderId}?done=delivered&xp=${Number(data) || 0}`);
+}

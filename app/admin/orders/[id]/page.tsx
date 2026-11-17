@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { changeOrderStatus, retryOzon } from "../../orderActions";
+import { changeOrderStatus, markDelivered, retryOzon } from "../../orderActions";
 
 export const dynamic = "force-dynamic";
 
@@ -18,12 +18,12 @@ export default async function OrderDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; done?: string; ozon?: string }>;
+  searchParams: Promise<{ error?: string; done?: string; ozon?: string; xp?: string }>;
 }) {
   await requireAdmin();
 
   const { id } = await params;
-  const { error: actionError, done, ozon: ozonSendStatus } = await searchParams;
+  const { error: actionError, done, ozon: ozonSendStatus, xp } = await searchParams;
 
   if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) {
     notFound();
@@ -83,6 +83,15 @@ export default async function OrderDetailPage({
   const whatsapp = whatsappResult.data;
   const ozon = ozonResult.data;
 
+  // XP tables may be missing until the accounts migration runs; the order
+  // page must still work, so these lookups never throw.
+  const [deliveryResult, rewardResult] = await Promise.all([
+    supabaseAdmin.from("order_deliveries").select("delivered_at").eq("order_id", id).maybeSingle(),
+    supabaseAdmin.from("reward_claims").select("xp_spent").eq("order_id", id).maybeSingle(),
+  ]);
+  const delivered = deliveryResult.data;
+  const reward = rewardResult.data;
+
   const testOrder =
     order.customer_name?.toUpperCase().includes("TEST") ||
     order.address?.toUpperCase().includes("DO NOT SHIP");
@@ -112,7 +121,37 @@ export default async function OrderDetailPage({
 
         {done && (
           <div role="status" className="mt-5 rounded-xl border border-flare/40 bg-flare/10 p-4 font-bold text-flare">
-            {done === "confirmed" ? "تم تأكيد الطلب." : "تم إلغاء الطلب ورجع المخزون."}
+            {done === "confirmed"
+              ? "تم تأكيد الطلب."
+              : done === "delivered"
+                ? `تسجل الطلب كمسلَّم. الزبون خدا ${Number(xp) || 0} XP.`
+                : "تم إلغاء الطلب ورجع المخزون."}
+          </div>
+        )}
+
+        {reward && (
+          <div className="mt-5 rounded-xl border border-flare/40 bg-flare/10 p-4 font-bold text-flare">
+            🎁 هدية Legendary: المنتج فابور، الزبون كيخلص غير التوصيل ({reward.xp_spent} XP تحسبو).
+          </div>
+        )}
+
+        {order.status === "confirmed" && (
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            {delivered ? (
+              <p className="rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
+                ✅ تسلَّم وتخلص ({new Date(delivered.delivered_at).toLocaleDateString("fr-MA")})
+              </p>
+            ) : (
+              <form action={markDelivered}>
+                <input type="hidden" name="orderId" value={order.id} />
+                <button
+                  type="submit"
+                  className="rounded-xl border border-flare/60 px-6 py-3 font-black text-flare hover:bg-flare/10"
+                >
+                  تسلَّم وتخلص (عطي XP)
+                </button>
+              </form>
+            )}
           </div>
         )}
 

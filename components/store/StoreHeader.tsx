@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, UserRound } from "lucide-react";
 import { useCart } from "../CartContext";
 
 const links = [
@@ -9,6 +9,8 @@ const links = [
   { href: "/#how", label: "كيفاش كتطلب" },
   { href: "/#crates", label: "الأكثر طلباً" },
 ];
+
+const accountsOn = process.env.NEXT_PUBLIC_ACCOUNTS_ENABLED === "true";
 
 export default function StoreHeader() {
   const { totalItems, openCart } = useCart();
@@ -44,6 +46,17 @@ export default function StoreHeader() {
           ))}
         </nav>
 
+        <div className="flex items-center gap-2">
+        {accountsOn && (
+          <Link
+            href="/account"
+            aria-label="الحساب و XP"
+            className="flex h-11 items-center gap-1.5 border border-line bg-map-2 px-3 text-ink transition hover:border-flare"
+          >
+            <UserRound size={18} />
+            <span dir="ltr" className="hidden font-mono text-[11px] tracking-wider text-flare sm:inline">XP</span>
+          </Link>
+        )}
         <button
           type="button"
           onClick={openCart}
@@ -57,6 +70,7 @@ export default function StoreHeader() {
             </span>
           )}
         </button>
+        </div>
       </div>
 
       <nav

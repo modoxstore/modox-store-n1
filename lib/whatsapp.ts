@@ -112,3 +112,67 @@ export async function sendOrderConfirmation(order: OrderMessage) {
   // Meta accepting the request does not mean the message was delivered.
   return response.json();
 }
+
+/**
+ * Sends the 6-digit login code with the "authentication" template
+ * (body {{1}} = code, plus a copy-code button that also takes the code).
+ * Create it in WhatsApp Manager: category Authentication, name
+ * WHATSAPP_LOGIN_TEMPLATE_NAME (default modox_login_code), language ar.
+ */
+export async function sendLoginCode(phone: string, code: string) {
+  const token = process.env.WHATSAPP_ACCESS_TOKEN;
+  const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const version = process.env.WHATSAPP_API_VERSION;
+  const templateName =
+    process.env.WHATSAPP_LOGIN_TEMPLATE_NAME || "modox_login_code";
+  const templateLanguage =
+    process.env.WHATSAPP_LOGIN_TEMPLATE_LANGUAGE || "ar";
+
+  if (!token || !phoneId || !version) {
+    throw new Error("WhatsApp configuration missing");
+  }
+
+  if (!/^212[567]\d{8}$/.test(phone) || !/^\d{6}$/.test(code)) {
+    throw new Error("Invalid login code request");
+  }
+
+  if (!isRecipientAllowed(phone)) {
+    throw new Error("Recipient not in WHATSAPP_TEST_RECIPIENTS");
+  }
+
+  const response = await fetch(
+    `https://graph.facebook.com/${version}/${phoneId}/messages`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messaging_product: "whatsapp",
+        to: phone,
+        type: "template",
+        template: {
+          name: templateName,
+          language: { code: templateLanguage },
+          components: [
+            { type: "body", parameters: [{ type: "text", text: code }] },
+            {
+              type: "button",
+              sub_type: "url",
+              index: "0",
+              parameters: [{ type: "text", text: code }],
+            },
+          ],
+        },
+      }),
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    console.error("WhatsApp login code error:", error?.error?.code);
+    throw new Error("Login code could not be sent");
+  }
+}

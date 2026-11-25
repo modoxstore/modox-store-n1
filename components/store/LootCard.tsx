@@ -3,6 +3,19 @@ import Link from "next/link";
 import { isRemoteImage, tierLabel } from "@/lib/catalog";
 import type { StoreProduct } from "@/lib/storeProducts";
 import AddToCartButton from "./AddToCartButton";
+import { discountPercent, isCooler } from "@/lib/blackFriday";
+
+// Ice flakes for cooler cards: [x offset, y offset, size, delay].
+const SNOW: [number, number, number, number][] = Array.from({ length: 14 }, (_, i) => {
+  const a = (i / 14) * Math.PI * 2;
+  const r = 70 + (i % 3) * 25;
+  return [
+    Math.round(Math.cos(a) * r),
+    Math.round(Math.sin(a) * r),
+    6 + (i % 4) * 2,
+    Math.round((i % 5) * 0.28 * 100) / 100,
+  ];
+});
 
 export default function LootCard({
   product,
@@ -13,10 +26,12 @@ export default function LootCard({
 }) {
   const lowStock = product.stock > 0 && product.stock <= 5;
   const soldOut = product.stock <= 0;
+  const cooler = isCooler(product.name) && !soldOut;
+  const pct = discountPercent(product.price, product.oldPrice);
 
   return (
     <article
-      className={`loot-card crate-frame tier-${product.tier} anim-rise group flex flex-col border border-line bg-map-2 transition duration-300 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--tc)_55%,var(--color-line))]`}
+      className={`${cooler ? "cooler-card " : ""}loot-card crate-frame tier-${product.tier} anim-rise group flex flex-col border border-line bg-map-2 transition duration-300 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--tc)_55%,var(--color-line))]`}
       style={{ animationDelay: `${Math.min(index, 12) * 50}ms` }}
     >
       <Link
@@ -45,9 +60,28 @@ export default function LootCard({
           {tierLabel[product.tier]}
         </span>
 
+        {cooler && (
+          <>
+            <span aria-hidden="true" className="cooler-ring" />
+            <span aria-hidden="true" className="cooler-snow">
+              {SNOW.map(([x, y, s, d], i) => (
+                <i
+                  key={i}
+                  style={{ "--x": `${x}px`, "--y": `${y}px`, "--s": `${s}px`, "--d": `${d}s` } as React.CSSProperties}
+                />
+              ))}
+            </span>
+          </>
+        )}
+
         {product.promoActive && (
-          <span className="absolute left-3 top-3 bg-flare px-2 py-1 font-mono text-[10px] font-semibold tracking-[0.12em] text-[#140a02]">
-            PROMO
+          <span
+            dir="ltr"
+            className={`absolute left-3 top-3 px-2 py-1 font-mono text-[11px] font-bold tracking-[0.1em] ${
+              pct > 0 ? "bf-badge" : "bg-flare text-[#140a02]"
+            }`}
+          >
+            {pct > 0 ? `-${pct}% BF` : "PROMO"}
           </span>
         )}
       </Link>

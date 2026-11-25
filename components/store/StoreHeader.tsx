@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ShoppingCart, UserRound } from "lucide-react";
 import { useCart } from "../CartContext";
+import { isBlackFriday } from "@/lib/blackFriday";
 
 const links = [
   { href: "/shop", label: "المتجر" },
@@ -11,15 +12,42 @@ const links = [
 ];
 
 const accountsOn = process.env.NEXT_PUBLIC_ACCOUNTS_ENABLED === "true";
+// Checked once when the page loads in the browser and at build/server time.
+const blackFriday = isBlackFriday();
+
+const TICKER = [
+  "⚡ BLACK FRIDAY",
+  "ناقص 20% على كلشي",
+  "❄ S6 Cooler ناقص 35%",
+  "الدفع عند الاستلام",
+  "توصيل لجميع المدن",
+  "⚡ BLACK FRIDAY",
+  "ناقص 20% على كلشي",
+  "❄ S6 Cooler ناقص 35%",
+];
 
 export default function StoreHeader() {
   const { totalItems, openCart } = useCart();
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-map/85 backdrop-blur-md">
-      <div className="bg-flare/95 px-4 py-1.5 text-center text-xs font-semibold text-[#140a02]">
-        توصيل لجميع مدن المغرب مع Ozon Express · الدفع عند الاستلام
-      </div>
+      {blackFriday ? (
+        <div className="overflow-hidden bg-flare py-1.5 text-xs font-bold text-black" aria-label="Black Friday: ناقص 20% على كلشي و 35% على S6 Cooler">
+          <div className="bf-ticker" aria-hidden="true">
+            {[0, 1].map((copy) => (
+              <span key={copy} className="flex shrink-0 gap-8 px-4">
+                {TICKER.map((item, i) => (
+                  <span key={i} className="whitespace-nowrap">{item}</span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-flare/95 px-4 py-1.5 text-center text-xs font-semibold text-[#140a02]">
+          توصيل لجميع مدن المغرب مع Ozon Express · الدفع عند الاستلام
+        </div>
+      )}
 
       <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-baseline gap-2" dir="ltr">

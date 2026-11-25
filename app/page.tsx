@@ -2,16 +2,19 @@ import Link from "next/link";
 import { connection } from "next/server";
 import StoreHeader from "@/components/store/StoreHeader";
 import DropHero from "@/components/store/DropHero";
+import BlackFridayHero from "@/components/store/BlackFridayHero";
 import HowItWorks from "@/components/store/HowItWorks";
 import LootCard from "@/components/store/LootCard";
 import TierLegend from "@/components/store/TierLegend";
 import Footer from "@/components/Footer";
 import { getStoreProducts } from "@/lib/storeProducts";
 import { tierOrder } from "@/lib/catalog";
+import { BLACK_FRIDAY_HERO_SLUG, isBlackFriday, isCooler } from "@/lib/blackFriday";
 
 export default async function Home() {
   await connection();
   const products = await getStoreProducts();
+  const blackFriday = isBlackFriday();
 
   // Available crates first, highest rarity first.
   const crates = [...products]
@@ -22,11 +25,34 @@ export default async function Home() {
     )
     .slice(0, 8);
 
+  const hero = products.find((p) => p.slug === BLACK_FRIDAY_HERO_SLUG) ?? null;
+  const coolers = products.filter((p) => isCooler(p.name) && p.stock > 0);
+
   return (
     <>
       <StoreHeader />
       <main>
-        <DropHero />
+        {blackFriday ? <BlackFridayHero hero={hero} /> : <DropHero />}
+
+        {blackFriday && coolers.length > 0 && (
+          <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_top,rgb(255_255_255/0.06),transparent_60%)]">
+            <div className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6">
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-flare" dir="ltr">
+                Cold zone · Black Friday
+              </p>
+              <h2 className="mt-1 font-arabic text-[36px] leading-tight text-ink sm:text-[44px]">
+                المبردات: حط عليهم وشوف الثلج ❄
+              </h2>
+              <p className="mt-2 text-dim">برد التيليفون وانت كتلعب، بلا ما يسخن وبلا لاگ.</p>
+              <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+                {coolers.map((product, i) => (
+                  <LootCard key={product.id} product={product} index={i} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <HowItWorks />
 
         <section

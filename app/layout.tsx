@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/components/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import { Analytics } from "@vercel/analytics/next";
+import Pixels from "@/components/Pixels";
 
 export const metadata: Metadata = {
   title: {
@@ -91,6 +92,7 @@ export default function RootLayout({
         </CartProvider>
 
         <Analytics />
+        <Pixels />
       </body>
     </html>
   );

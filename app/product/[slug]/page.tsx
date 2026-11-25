@@ -6,6 +6,7 @@ import { connection } from "next/server";
 import { Banknote, MessageCircle, ShieldCheck, Truck } from "lucide-react";
 import StoreHeader from "@/components/store/StoreHeader";
 import AddToCartButton from "@/components/store/AddToCartButton";
+import TrackView from "@/components/store/TrackView";
 import LootCard from "@/components/store/LootCard";
 import Footer from "@/components/Footer";
 import { getStoreProductBySlug } from "@/lib/storeProducts";
@@ -152,6 +153,7 @@ export default async function ProductPage({ params }: Props) {
               </div>
             )}
 
+            <TrackView name={product.name} price={product.price} />
             <div className="mt-8">
               <AddToCartButton
                 name={product.name}

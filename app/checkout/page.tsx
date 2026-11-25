@@ -13,6 +13,7 @@ import {
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartContext";
 import DropSequence from "@/components/store/DropSequence";
+import { trackCheckout, trackPurchase } from "@/lib/track";
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
   const [placed, setPlaced] = useState<{
@@ -67,6 +68,17 @@ export default function CheckoutPage() {
     openedAtRef.current = Date.now();
   }, []);
 
+  // Ad pixels: checkout started (once, when the cart has items).
+  const checkoutTracked = useRef(false);
+  useEffect(() => {
+    if (checkoutTracked.current || items.length === 0) return;
+    checkoutTracked.current = true;
+    trackCheckout(
+      items.map((item) => ({ name: item.name, price: item.price, quantity: item.quantity })),
+      totalPrice
+    );
+  }, [items, totalPrice]);
+
 
   const sendOrder = async (
     event: FormEvent<HTMLFormElement>,
@@ -114,6 +126,12 @@ export default function CheckoutPage() {
       if (!response.ok) {
         throw new Error(result.error || "تعذر تسجيل الطلب");
       }
+
+      trackPurchase(
+        result.orderId,
+        items.map((item) => ({ name: item.name, price: item.price, quantity: item.quantity })),
+        totalPrice
+      );
 
       // Drop animation, then the order tracking page.
       setPlaced({

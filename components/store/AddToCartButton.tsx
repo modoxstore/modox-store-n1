@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ShoppingCart, Zap } from "lucide-react";
 import { useCart } from "../CartContext";
+import { trackAddToCart } from "@/lib/track";
 
 type Props = {
   name: string;
@@ -42,6 +43,7 @@ export default function AddToCartButton({
           type="button"
           onClick={() => {
             addToCart({ name, price, image });
+            trackAddToCart({ name, price });
             closeCart();
             router.push("/checkout");
           }}
@@ -52,7 +54,10 @@ export default function AddToCartButton({
         </button>
         <button
           type="button"
-          onClick={() => addToCart({ name, price, image })}
+          onClick={() => {
+        addToCart({ name, price, image });
+        trackAddToCart({ name, price });
+      }}
           className="flex items-center justify-center gap-2 border border-line bg-map-2 px-5 py-4 font-arabic text-[19px] text-ink transition hover:border-flare"
         >
           <ShoppingCart size={20} />
@@ -65,7 +70,10 @@ export default function AddToCartButton({
   return (
     <button
       type="button"
-      onClick={() => addToCart({ name, price, image })}
+      onClick={() => {
+        addToCart({ name, price, image });
+        trackAddToCart({ name, price });
+      }}
       className="cut-corners flex w-full items-center justify-center gap-2 bg-flare px-4 py-3 font-arabic text-[17px] text-[#140a02] transition hover:-translate-y-0.5"
     >
       <ShoppingCart size={18} />
